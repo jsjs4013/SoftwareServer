@@ -30,12 +30,7 @@ class EclassCheck:
         with urllib.request.urlopen(req) as response: # Request 전송
             response.read()
 
-        time.sleep(1)
-
-        with urllib.request.urlopen(req) as response:  # Request 전송
-            response.read()
-
-        time.sleep(1)
+        time.sleep(3)
 
         with urllib.request.urlopen(req) as response:  # Request 전송
             req = response.read()
