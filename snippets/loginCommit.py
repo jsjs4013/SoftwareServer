@@ -27,11 +27,11 @@ class EclassCheck:
 
         with urllib.request.urlopen(req) as response: # Request 전송
             response.read()
-        time.sleep(3)
+        time.sleep(1)
 
         with urllib.request.urlopen(req) as response:  # Request 전송
             req = response.read()
-        time.sleep(3)
+        time.sleep(5)
         #res = opener.open(login_url)
 
         #### LOGIN CHECK : user 이름 가져오기 ####
