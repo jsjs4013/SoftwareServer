@@ -229,6 +229,7 @@ def loginCommit(request):
         userName = loginCheck.check()
 
         if userName != False:
+            del loginCheck
 
             return Response(userName)
 
