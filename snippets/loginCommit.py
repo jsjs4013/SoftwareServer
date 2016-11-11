@@ -27,7 +27,7 @@ class EclassCheck:
         #res = opener.open(login_url)
 
         #### LOGIN CHECK : user 이름 가져오기 ####
-        main_url = 'https://eclass.dongguk.edu/Main.do?cmd=viewEclassMain&mainMenuId=menu_00050&subMenuId=&menuType=menu'
+        main_url = 'http://eclass.dongguk.edu/Main.do?cmd=viewEclassMain&mainMenuId=menu_00050&subMenuId=&menuType=menu'
         res = opener.open(main_url)
         data = res.read().decode('utf-8')
         soup = BeautifulSoup(data, "html.parser")

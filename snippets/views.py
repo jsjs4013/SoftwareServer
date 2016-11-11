@@ -265,6 +265,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from snippets.loginCommit import EclassCheck
+import time
 
 
 class SnippetList(APIView):
@@ -290,8 +291,6 @@ class LoginCommit(APIView):
         userName = loginCheck.check()
 
         if userName != False:
-            del loginCheck
-
             return Response(userName)
 
 
