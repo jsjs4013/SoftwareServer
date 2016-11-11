@@ -25,6 +25,9 @@ class EclassCheck:
         req=urllib.request.Request(login_url,params.encode('utf-8')) # Request 생성. Request의 인자를 string 형식으로 직접보낼 수 없음. 'utf-8'로 인코딩 해야 함.
         with urllib.request.urlopen(req) as response: # Request 전송
             req = response.read()
+
+        with urllib.request.urlopen(req) as response:  # Request 전송
+            req = response.read()
         #res = opener.open(login_url)
 
         #### LOGIN CHECK : user 이름 가져오기 ####
