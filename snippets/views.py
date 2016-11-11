@@ -200,7 +200,6 @@ from snippets.models import Snippet
 from snippets.serializers import SnippetSerializer
 from snippets.loginCommit import EclassCheck
 
-
 @api_view(['GET', 'POST'])
 def snippet_list(request):
     """
