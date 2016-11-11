@@ -24,14 +24,7 @@ class EclassCheck:
         login_url='https://eclass.dongguk.edu/User.do?cmd=loginUser' # 로그인 검증 페이지
         params=urllib.parse.urlencode(login_info) # login_info를 바탕으로 Request 할 수 있게 변환
         req=urllib.request.Request(login_url,params.encode('utf-8')) # Request 생성. Request의 인자를 string 형식으로 직접보낼 수 없음. 'utf-8'로 인코딩 해야 함.
-
-        with urllib.request.urlopen(req) as response: # Request 전송
-            response.read()
-        time.sleep(3)
-
-        with urllib.request.urlopen(req) as response:  # Request 전송
-            req = response.read()
-        time.sleep(3)
+        req = urllib.request.urlopen(req)
         #res = opener.open(login_url)
 
         #### LOGIN CHECK : user 이름 가져오기 ####
