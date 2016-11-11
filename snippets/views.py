@@ -229,7 +229,6 @@ def loginCommit(request):
         userName = loginCheck.check()
 
         if userName != False:
-
             return Response(userName)
 
 @api_view(['GET', 'PUT', 'DELETE'])
