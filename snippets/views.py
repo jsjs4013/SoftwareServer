@@ -291,6 +291,8 @@ class LoginCommit(APIView):
 
         if userName != False:
             return Response(userName)
+        else:
+            return Response('error', status=status.HTTP_400_BAD_REQUEST)
 
 
 class SnippetDetail(APIView):
