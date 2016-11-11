@@ -2,6 +2,7 @@ import urllib
 import http.cookiejar
 import ssl
 from bs4 import BeautifulSoup
+import time
 
 class EclassCheck:
     def check(self):
@@ -26,8 +27,10 @@ class EclassCheck:
         with urllib.request.urlopen(req) as response: # Request 전송
             response.read()
 
-        with urllib.request.urlopen(req) as response:  # Request 전송
-            req = response.read()
+        time.sleep(5)
+
+        # with urllib.request.urlopen(req) as response:  # Request 전송
+        #     req = response.read()
         #res = opener.open(login_url)
 
         #### LOGIN CHECK : user 이름 가져오기 ####
