@@ -39,8 +39,6 @@ class EclassCheck:
                 return userName
         except  AttributeError:
                 #print('입력하신 아이디 혹은 비밀번호가 일치하지 않습니다.')
-
                 return False
-
 
         #logout_url = 'https://eclass.dongguk.edu/User.do?cmd=logoutUser'
