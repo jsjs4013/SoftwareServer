@@ -265,7 +265,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from snippets.loginCommit import EclassCheck
-
+from tkinter import *
+from tkinter import messagebox
 
 class SnippetList(APIView):
     """
@@ -283,15 +284,20 @@ class SnippetList(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
 class LoginCommit(APIView):
     def get(self, request, format=None):
         loginCheck = EclassCheck()
         userName = loginCheck.check()
 
+        i = 0
         while userName == False:
             userName = loginCheck.check()
-
+            i += 1
+            if i == 10:
+                Response('ID/PW error')
+                root = Tk()
+                messagebox.showinfo('eclass.dongguk.edu 내용: ', '입력하신 아이디 혹은 비밀번호가 일치하지 않습니다.')
+                root.mainloop()
         return Response(userName)
         # if userName != False:
         #     return Response(userName)
