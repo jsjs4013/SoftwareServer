@@ -2,11 +2,11 @@ import urllib
 import http.cookiejar
 import ssl
 from bs4 import BeautifulSoup
+import time
 
 class EclassCheck:
     def check(self):
         #### LOGIN INFO ####
-        # 헤더에 실어보낼 값
         login_info={
                 'userDTO.userId':'2014112025', # YourID
                 'userDTO.password':'wlsduddl14' # YourPW
@@ -23,7 +23,9 @@ class EclassCheck:
         login_url='https://eclass.dongguk.edu/User.do?cmd=loginUser' # 로그인 검증 페이지
         params=urllib.parse.urlencode(login_info) # login_info를 바탕으로 Request 할 수 있게 변환
         req=urllib.request.Request(login_url,params.encode('utf-8')) # Request 생성. Request의 인자를 string 형식으로 직접보낼 수 없음. 'utf-8'로 인코딩 해야 함.
-        res = urllib.request.urlopen(req) # Request 전송
+
+        with urllib.request.urlopen(req) as response:  # Request 전송
+            req = response.read()
 
         #### LOGIN CHECK ####
         main_url = 'https://eclass.dongguk.edu/Main.do?cmd=viewEclassMain&mainMenuId=menu_00050&subMenuId=&menuType=menu'
@@ -34,8 +36,6 @@ class EclassCheck:
         try :  # 로그인 실패시 예외처리
                 userName = soup.find('span', {'class': 'user'}).find('strong').text
                 userName = userName.strip()  # 양쪽 끝의 공백 문자 제거
-                #print(userName) # user 이름 가져오기
-                return userName
+                return userName  # user 이름 가져오기
         except  AttributeError:
-                #print('입력하신 아이디 혹은 비밀번호가 일치하지 않습니다.')
                 return False

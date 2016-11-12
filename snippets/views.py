@@ -193,65 +193,147 @@
 #         if userName != False:
 #             return Response('success')
 
-from rest_framework import status
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
+# from rest_framework import status
+# from rest_framework.decorators import api_view
+# from rest_framework.response import Response
+# from snippets.models import Snippet
+# from snippets.serializers import SnippetSerializer
+# from snippets.loginCommit import EclassCheck
+#
+#
+# @api_view(['GET', 'POST'])
+# def snippet_list(request):
+#     """
+#     코드 조각을 모두 보여주거나 새 코드 조각을 만듭니다.
+#     """
+#     if request.method == 'GET':
+#         snippets = Snippet.objects.all()
+#         serializer = SnippetSerializer(snippets, many=True)
+#
+#         return Response(serializer.data)
+#
+#     elif request.method == 'POST':
+#         serializer = SnippetSerializer(data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data, status=status.HTTP_201_CREATED)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+#
+# @api_view(['GET'])
+# def loginCommit(request):
+#     """
+#     코드 조각을 모두 보여주거나 새 코드 조각을 만듭니다.
+#     """
+#     if request.method == 'GET':
+#         loginCheck = EclassCheck()
+#         userName = loginCheck.check()
+#
+#         if userName != False:
+#             del loginCheck
+#
+#             return Response(userName)
+#
+# @api_view(['GET', 'PUT', 'DELETE'])
+# def snippet_detail(request, pk):
+#     """
+#     코드 조각 조회, 업데이트, 삭제
+#     """
+#     try:
+#         snippet = Snippet.objects.get(pk=pk)
+#     except Snippet.DoesNotExist:
+#         return Response(status=status.HTTP_404_NOT_FOUND)
+#
+#     if request.method == 'GET':
+#         serializer = SnippetSerializer(snippet)
+#         return Response(serializer.data)
+#
+#     elif request.method == 'PUT':
+#         serializer = SnippetSerializer(snippet, data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+#
+#     elif request.method == 'DELETE':
+#         snippet.delete()
+#         return Response(status=status.HTTP_204_NO_CONTENT)
+
 from snippets.models import Snippet
 from snippets.serializers import SnippetSerializer
+from django.http import Http404
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
 from snippets.loginCommit import EclassCheck
+from tkinter import *
+from tkinter import messagebox
 
+<<<<<<< HEAD
 @api_view(['GET', 'POST'])
 def snippet_list(request):
+=======
+class SnippetList(APIView):
+>>>>>>> TestServer
     """
     코드 조각을 모두 보여주거나 새 코드 조각을 만듭니다.
     """
-    if request.method == 'GET':
+    def get(self, request, format=None):
         snippets = Snippet.objects.all()
         serializer = SnippetSerializer(snippets, many=True)
-
         return Response(serializer.data)
 
-    elif request.method == 'POST':
+    def post(self, request, format=None):
         serializer = SnippetSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['GET'])
-def loginCommit(request):
-    """
-    코드 조각을 모두 보여주거나 새 코드 조각을 만듭니다.
-    """
-    if request.method == 'GET':
+class LoginCommit(APIView):
+    def get(self, request, format=None):
         loginCheck = EclassCheck()
         userName = loginCheck.check()
 
-        if userName != False:
-            
-            return Response(userName)
+        i = 0
+        while userName == False:
+            userName = loginCheck.check()
+            i += 1
+            if i == 10:
+                Response('ID/PW error')
+                root = Tk()
+                messagebox.showinfo('eclass.dongguk.edu 내용: ', '입력하신 아이디 혹은 비밀번호가 일치하지 않습니다.')
+                root.mainloop()
+        return Response(userName)
+        # if userName != False:
+        #     return Response(userName)
+        # else:
+        #     return Response('error', status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['GET', 'PUT', 'DELETE'])
-def snippet_detail(request, pk):
+
+class SnippetDetail(APIView):
     """
     코드 조각 조회, 업데이트, 삭제
     """
-    try:
-        snippet = Snippet.objects.get(pk=pk)
-    except Snippet.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
+    def get_object(self, pk):
+        try:
+            return Snippet.objects.get(pk=pk)
+        except Snippet.DoesNotExist:
+            raise Http404
 
-    if request.method == 'GET':
+    def get(self, request, pk, format=None):
+        snippet = self.get_object(pk)
         serializer = SnippetSerializer(snippet)
         return Response(serializer.data)
 
-    elif request.method == 'PUT':
+    def put(self, request, pk, format=None):
+        snippet = self.get_object(pk)
         serializer = SnippetSerializer(snippet, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    elif request.method == 'DELETE':
+    def delete(self, request, pk, format=None):
+        snippet = self.get_object(pk)
         snippet.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
