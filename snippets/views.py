@@ -268,6 +268,7 @@ from snippets.loginCommit import EclassCheck
 from tkinter import *
 from tkinter import messagebox
 from urllib.error import URLError
+import urllib.HTTPerror
 # from django.http.response import HttpResponse
 
 class SnippetList(APIView):
@@ -298,14 +299,8 @@ class LoginCommit(APIView):
             for i in 10 :
                 if userName == False:
                     userName = loginCheck.check()
-            url = 'http://softwaretp.azurewebsites.net/loginCheck/ '
-            if url.status == 500 or url.status == 404 :
-                root = Tk()
-                Response('ID/PW error')
-                messagebox.showinfo('eclass.dongguk.edu 내용: ', '입력하신 아이디 혹은 비밀번호가 일치하지 않습니다.')
-                root.mainloop()
 
-        except ( URLError, SyntaxError, AttributeError, Http404, TypeError):
+        except (urllib.HTTPerror, URLError, SyntaxError, AttributeError, Http404, TypeError):
             root = Tk()
             Response('ID/PW error')
             messagebox.showinfo('eclass.dongguk.edu 내용: ', '입력하신 아이디 혹은 비밀번호가 일치하지 않습니다.')
