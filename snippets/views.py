@@ -287,17 +287,19 @@ class SnippetList(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class LoginCommit(APIView):
-    def login_info(request, id, pw):
-        return HttpResponse("id : " + id, "pw : " + pw)
+    #def login_info(request, id, pw):
+    #    return HttpResponse("id : " + id, "pw : " + pw)
 
     def get(self, request, format=None):
-        loginCheck = EclassCheck()
-        userName = loginCheck.check()
-
         try :
-           for i in 10 :
+            loginCheck = EclassCheck()
+            userName = loginCheck.check()
+
+            for i in 10 :
                 if userName == False:
                     userName = loginCheck.check()
+                else:
+                    break
         except (URLError, SyntaxError, AttributeError, Http404, TypeError):
             root = Tk()
             Response('ID/PW error')
