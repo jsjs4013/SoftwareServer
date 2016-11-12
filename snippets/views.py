@@ -289,10 +289,14 @@ class LoginCommit(APIView):
         loginCheck = EclassCheck()
         userName = loginCheck.check()
 
-        if userName != False:
-            return Response(userName)
-        else:
-            return Response('error', status=status.HTTP_400_BAD_REQUEST)
+        while userName == False:
+            userName = loginCheck.check()
+
+        return Response(userName)
+        # if userName != False:
+        #     return Response(userName)
+        # else:
+        #     return Response('error', status=status.HTTP_400_BAD_REQUEST)
 
 
 class SnippetDetail(APIView):
