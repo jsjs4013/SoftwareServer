@@ -294,7 +294,7 @@ class LoginCommit(APIView):
            for i in 10 :
                 if userName == False:
                     userName = loginCheck.check()
-        except (URLError, SyntaxError, AttributeError, Http404):
+        except (URLError, SyntaxError, AttributeError, Http404, TypeError):
             root = Tk()
             Response('ID/PW error')
             messagebox.showinfo('eclass.dongguk.edu 내용: ', '입력하신 아이디 혹은 비밀번호가 일치하지 않습니다.')
