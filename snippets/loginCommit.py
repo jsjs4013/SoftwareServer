@@ -5,11 +5,11 @@ from bs4 import BeautifulSoup
 import time
 
 class EclassCheck:
-    def check(self):
+    def check(self, id, pw):
         #### LOGIN INFO ####
         login_info={
-                'userDTO.userId':'2014112025', # YourID
-                'userDTO.password':'dd' # YourPW
+                'userDTO.userId':id, # YourID
+                'userDTO.password': pw # YourPW
         }
 
         #### LOGIN OPERATION ####

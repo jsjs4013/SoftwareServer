@@ -268,6 +268,7 @@ from snippets.loginCommit import EclassCheck
 from tkinter import *
 from tkinter import messagebox
 from urllib.error import URLError
+from django.http.response import HttpResponse
 
 class SnippetList(APIView):
     """
@@ -286,6 +287,9 @@ class SnippetList(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class LoginCommit(APIView):
+    def login_info(request, id, pw):
+        return HttpResponse("id : " + id, "pw : " + pw)
+
     def get(self, request, format=None):
         loginCheck = EclassCheck()
         userName = loginCheck.check()
