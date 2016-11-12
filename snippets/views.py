@@ -267,6 +267,7 @@ from rest_framework import status
 from snippets.loginCommit import EclassCheck
 from tkinter import *
 from tkinter import messagebox
+from urllib.error import URLError
 
 class SnippetList(APIView):
     """
@@ -289,15 +290,16 @@ class LoginCommit(APIView):
         loginCheck = EclassCheck()
         userName = loginCheck.check()
 
-        i = 0
-        while userName == False:
-            userName = loginCheck.check()
-            i += 1
-            if i == 10:
-                Response('ID/PW error')
-                root = Tk()
-                messagebox.showinfo('eclass.dongguk.edu 내용: ', '입력하신 아이디 혹은 비밀번호가 일치하지 않습니다.')
-                root.mainloop()
+        try :
+           for i in 10 :
+                if userName == False:
+                    userName = loginCheck.check()
+        except (URLError, SyntaxError, AttributeError, Http404):
+            root = Tk()
+            Response('ID/PW error')
+            messagebox.showinfo('eclass.dongguk.edu 내용: ', '입력하신 아이디 혹은 비밀번호가 일치하지 않습니다.')
+            root.mainloop()
+
         return Response(userName)
         # if userName != False:
         #     return Response(userName)
