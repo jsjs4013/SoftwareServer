@@ -295,17 +295,27 @@ class LoginCommit(APIView):
             loginCheck = EclassCheck()
             userName = loginCheck.check()
 
-            for i in 10 :
-                if userName == False:
-                   userName = loginCheck.check()
+            i = 0
+            while userName == False:
+                i += 1
+                userName = loginCheck.check()
+                if i == 10 :
+                    break
 
-        except (HTTPError, URLError, SyntaxError, AttributeError, Http404, TypeError):
+            if userName != False:
+                return Response(userName)
+            else:
+                root = Tk()
+                messagebox.showinfo('eclass.dongguk.edu 내용: ', '입력하신 아이디 혹은 비밀번호가 일치하지 않습니다.')
+                root.mainloop()
+                return Response('ID/PW error')
+
+        except (HTTPError, URLError, SyntaxError, AssertionError, AttributeError, Http404, TypeError):
             root = Tk()
-            Response('ID/PW error')
+            Response(userName)
             messagebox.showinfo('eclass.dongguk.edu 내용: ', '입력하신 아이디 혹은 비밀번호가 일치하지 않습니다.')
             root.mainloop()
 
-        return Response(userName)
         # if userName != False:
         #     return Response(userName)
         # else:

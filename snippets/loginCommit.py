@@ -10,7 +10,7 @@ class EclassCheck:
         #### LOGIN INFO ####
         login_info={
                 'userDTO.userId': '2014112025', # YourID
-                'userDTO.password': 'wlsduddl14' # YourPW
+                'userDTO.password': 'wlsduddl' # YourPW
         }
 
         #### LOGIN OPERATION ####
