@@ -268,12 +268,7 @@ from snippets.loginCommit import EclassCheck
 from tkinter import *
 from tkinter import messagebox
 
-<<<<<<< HEAD
-@api_view(['GET', 'POST'])
-def snippet_list(request):
-=======
 class SnippetList(APIView):
->>>>>>> TestServer
     """
     코드 조각을 모두 보여주거나 새 코드 조각을 만듭니다.
     """
