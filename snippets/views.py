@@ -293,6 +293,7 @@ class LoginCommit(APIView):
         while userName == False:
             userName = loginCheck.check()
             i += 1
+            
             if i == 10:
                 return Response('ID/PW Error')
 
