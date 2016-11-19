@@ -266,6 +266,9 @@ from rest_framework.response import Response
 from rest_framework import status
 from snippets.loginCommit import EclassCheck
 
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.permissions import IsAuthenticated
+
 
 class SnippetList(APIView):
     """
@@ -289,20 +292,25 @@ class LoginCommit(APIView):
         loginCheck = EclassCheck()
         userName = loginCheck.check()
 
-        while userName == False:
+        count = 0
+        while userName == False and count != 10:
             userName = loginCheck.check()
 
-        return Response(userName)
-        # if userName != False:
-        #     return Response(userName)
-        # else:
-        #     return Response('error', status=status.HTTP_400_BAD_REQUEST)
+            count += 1
+
+        if userName == False:
+            return Response('ID_OR_PW_ERROR')
+        else:
+            return Response(userName)
 
 
 class SnippetDetail(APIView):
     """
     코드 조각 조회, 업데이트, 삭제
     """
+
+    # authentication_classes = (SessionAuthentication, BasicAuthentication)
+    # permission_classes = (IsAuthenticated,)
     def get_object(self, pk):
         try:
             return Snippet.objects.get(pk=pk)
