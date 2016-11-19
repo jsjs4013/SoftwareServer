@@ -305,7 +305,7 @@ class LoginCommit(APIView):
                 return Response('eclass.dongguk.edu 내용: 입력하신 아이디 혹은 비밀번호가 일치하지 않습니다.')
 
         except (HTTPError, URLError, SyntaxError, AssertionError, AttributeError, Http404, TypeError):
-            Response('eclass.dongguk.edu 내용: ', '입력하신 아이디 혹은 비밀번호가 일치하지 않습니다.')
+            Response('eclass.dongguk.edu 내용: 입력하신 아이디 혹은 비밀번호가 일치하지 않습니다.')
 
         # if userName != False:
         #     return Response(userName)
