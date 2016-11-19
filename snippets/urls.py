@@ -61,15 +61,11 @@
 from django.conf.urls import url
 from rest_framework.urlpatterns import format_suffix_patterns
 from snippets import views
-from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token, verify_jwt_token
 
 urlpatterns = [
     url(r'^snippets/$', views.SnippetList.as_view()),
     url(r'^loginCheck/$', views.LoginCommit.as_view()),
     url(r'^snippets/(?P<pk>[0-9]+)/$', views.SnippetDetail.as_view()),
-    url(r'^api-token-auth/', obtain_jwt_token),
-    url(r'^api-token-refresh/', refresh_jwt_token),
-    url(r'^api-token-verify/', verify_jwt_token),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
