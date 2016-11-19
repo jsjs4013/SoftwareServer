@@ -38,11 +38,28 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'snippets.apps.SnippetsConfig',
+    'rest_framework',
 ]
 
 REST_FRAMEWORK = {
     'PAGE_SIZE': 10
+    'PAGE_SIZE': 10,
+
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+    ),
 }
+'''
+curl -X POST -d "username=2014112025&password=wlsduddl14!"  http://127.0.0.1:8000/loginCheck/
+
+curl -H "Authorization: JWT <your_token>"  http://127.0.0.1:8000/loginCheck/
+'''
+
 
 MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
