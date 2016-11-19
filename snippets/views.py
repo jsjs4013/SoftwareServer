@@ -288,9 +288,14 @@ class LoginCommit(APIView):
     def get(self, request, format=None):
         loginCheck = EclassCheck()
         userName = loginCheck.check()
+        i = 0
 
         while userName == False:
             userName = loginCheck.check()
+            i += 1
+            
+            if i == 10:
+                return Response('ID/PW Error')
 
         return Response(userName)
         # if userName != False:
