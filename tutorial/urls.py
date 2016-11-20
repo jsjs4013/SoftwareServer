@@ -22,6 +22,6 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^', include('snippets.urls')),
 
-    url(r'^loginCheck/', obtain_jwt_token),
+    url(r'^api-token-auth/', obtain_jwt_token),
 
 ]
