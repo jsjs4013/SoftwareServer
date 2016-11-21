@@ -294,8 +294,8 @@ class SnippetList(APIView):
     def get(self, request, format=None):
         snippets = Snippet.objects.all()
         serializer = SnippetSerializer(snippets, many=True)
-        # return Response(serializer.data)
-        return Response(User.objects.values())
+        return Response(serializer.data)
+        # return Response(User.objects.values())
 
     def post(self, request, format=None):
         serializer = SnippetSerializer(data=request.data)
@@ -337,7 +337,7 @@ class LoginCommit(APIView):
     def post(self, request, format=None):
         ID = request.POST["ID"]
         # PW = request.POST["PW"]
-        PW = "mjw112415"
+        PW = "mjw!112415"
 
         loginCheck = EclassCheck()
         userName = loginCheck.check(ID, PW)
@@ -348,8 +348,6 @@ class LoginCommit(APIView):
             i += 1
 
             if i == 10:
-                user = UserManagement()
-                user.login(ID, PW)
                 return Response('error')
         # data = request.POST['PW']
         # return JSONResponse(userName)
