@@ -337,7 +337,7 @@ class LoginCommit(APIView):
     def post(self, request, format=None):
         ID = request.POST["ID"]
         # PW = request.POST["PW"]
-        PW = "mjw!112415"
+        PW = "mjw112415"
         user = UserManagement()
 
         loginCheck = EclassCheck()
@@ -352,7 +352,7 @@ class LoginCommit(APIView):
                 return Response('error')
         # data = request.POST['PW']
         # return JSONResponse(userName)
-        # user.login(ID, PW)
+        user.login(ID, PW)
         return Response(userName)
 
 # class SnippetDetail(APIView):
