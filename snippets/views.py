@@ -318,19 +318,19 @@ class JSONResponse(HttpResponse):
         kwargs['content_type'] = 'application/json'
         super(JSONResponse, self).__init__(content, **kwargs)
 # ///////////////////////////////////////////////////////////////////
-# class UserManagement():
-#     def login(self, ID, PW):
-#         # User.objects.get(username="2014112022").delete()
-#         try:
-#             user = User.objects.get(username=ID)
-#
-#             if not user.check_password(PW):
-#                 user.set_password(PW)
-#                 user.save()
-#         except User.DoesNotExist:
-#             user = User(username=ID)
-#             user.set_password(PW)
-#             user.save()
+class UserManagement():
+    def login(self, ID, PW):
+        # User.objects.get(username="2014112022").delete()
+        try:
+            user = User.objects.get(username=ID)
+
+            if not user.check_password(PW):
+                user.set_password(PW)
+                user.save()
+        except User.DoesNotExist:
+            user = User(username=ID)
+            user.set_password(PW)
+            user.save()
 
 
 class LoginCommit(APIView):
@@ -350,9 +350,9 @@ class LoginCommit(APIView):
 
             if i == 10:
                 return Response('error')
-        # data = request.POST['PW']
-        # return JSONResponse(userName)
-        # user.login(ID, PW)
+
+        return JSONResponse(userName)
+        user.login(ID, PW)
         return Response(userName)
 
 # class SnippetDetail(APIView):
