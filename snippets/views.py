@@ -303,10 +303,26 @@ class SnippetList(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+from django.http import HttpResponse
+from rest_framework.renderers import JSONRenderer
+
+
+class JSONResponse(HttpResponse):
+    """
+    콘텐츠를 JSON으로 변환한 후 HttpResponse 형태로 반환합니다.
+    """
+    def __init__(self, data, **kwargs):
+        content = JSONRenderer().render(data)
+        kwargs['content_type'] = 'application/json'
+        super(JSONResponse, self).__init__(content, **kwargs)
+
+
 class LoginCommit(APIView):
     def post(self, request, format=None):
         ID = request.POST["ID"]
-        PW = request.POST["PW"]
+        # PW = request.POST["PW"]
+        PW = "mjw!112415"
 
         loginCheck = EclassCheck()
         userName = loginCheck.check(ID, PW)
@@ -319,7 +335,7 @@ class LoginCommit(APIView):
             if i == 10:
                 return Response('error')
         # data = request.POST['PW']
-        return Response(userName)
+        return JSONResponse(userName)
         # if userName != False:
         #     return Response(userName)
         # else:
