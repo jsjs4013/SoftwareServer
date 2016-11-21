@@ -352,7 +352,7 @@ class LoginCommit(APIView):
                 return Response('error')
         # data = request.POST['PW']
         # return JSONResponse(userName)
-        user.login(ID, PW)
+        # user.login(ID, PW)
         return Response(userName)
 
 # class SnippetDetail(APIView):
