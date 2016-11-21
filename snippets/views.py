@@ -349,7 +349,7 @@ class LoginCommit(APIView):
             i += 1
 
             if i == 10:
-                user.login(ID, PW)
+                # user.login(ID, PW)
                 return Response('error')
 
         return JSONResponse(userName)
