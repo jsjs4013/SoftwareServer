@@ -7,7 +7,6 @@ import time
 class EclassCheck:
     def check(self, ID, PW):
         #### LOGIN INFO ####
-        # 헤더에 실어보낼 값
         login_info={
                 'userDTO.userId':ID, # YourID 2014112025
                 'userDTO.password':PW # YourPW wlsduddl14!
@@ -27,9 +26,8 @@ class EclassCheck:
 
         with urllib.request.urlopen(req) as response:  # Request 전송
             req = response.read()
-        #res = opener.open(login_url)
 
-        #### LOGIN CHECK : user 이름 가져오기 ####
+        #### LOGIN CHECK ####
         main_url = 'https://eclass.dongguk.edu/Main.do?cmd=viewEclassMain&mainMenuId=menu_00050&subMenuId=&menuType=menu'
         res = opener.open(main_url)
         data = res.read().decode('utf-8')
@@ -38,12 +36,6 @@ class EclassCheck:
         try :  # 로그인 실패시 예외처리
                 userName = soup.find('span', {'class': 'user'}).find('strong').text
                 userName = userName.strip()  # 양쪽 끝의 공백 문자 제거
-                #print(userName)
-                return userName
+                return userName  # user 이름 가져오기
         except  AttributeError:
-                #print('입력하신 아이디 혹은 비밀번호가 일치하지 않습니다.')
-
                 return False
-
-
-        #logout_url = 'https://eclass.dongguk.edu/User.do?cmd=logoutUser'

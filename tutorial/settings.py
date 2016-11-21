@@ -28,7 +28,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = '*'
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -53,6 +52,12 @@ REST_FRAMEWORK = {
         'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
     ),
 }
+
+'''
+curl -X POST -d "username=2014112025&password=wlsduddl14!"  http://127.0.0.1:8000/loginCheck
+
+curl -H "Authorization: JWT <your_token>"  http://127.0.0.1:8000//
+'''
 
 MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
