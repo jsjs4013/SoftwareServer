@@ -99,7 +99,7 @@
 #         return self.destroy(request, *args, **kwargs)
 
 from snippets.models import Snippet
-from snippets.serializers import SnippetSerializer, UserSerializer
+from snippets.serializers import SnippetSerializer
 # from snippets.loginCommit import EclassCheck
 from rest_framework import generics, permissions, renderers, viewsets
 # from django.contrib.auth.models import User
@@ -259,7 +259,7 @@ class SnippetDetail(generics.RetrieveUpdateDestroyAPIView):
 #         return Response(status=status.HTTP_204_NO_CONTENT)
 
 from snippets.models import Snippet
-from snippets.serializers import SnippetSerializer, UserSerializer
+from snippets.serializers import SnippetSerializer
 from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -273,32 +273,33 @@ from snippets.permissions import IsOwnerOrReadOnly
 from django.contrib.auth.models import User
 
 
-class UserList(generics.ListAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-
-
-class UserDetail(generics.RetrieveAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
+# class UserList(generics.ListAPIView):
+#     queryset = User.objects.all()
+#     serializer_class = UserSerializer
+#
+#
+# class UserDetail(generics.RetrieveAPIView):
+#     queryset = User.objects.all()
+#     serializer_class = UserSerializer
 
 
 class SnippetList(APIView):
     """
     코드 조각을 모두 보여주거나 새 코드 조각을 만듭니다.
     """
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    # permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
     def get(self, request, format=None):
         snippets = Snippet.objects.all()
         serializer = SnippetSerializer(snippets, many=True)
-        # return Response(serializer.data)
-        return Response(User.objects.values())
+        return Response(serializer.data)
+        # return Response(User.objects.values())
 
     def post(self, request, format=None):
         serializer = SnippetSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save(owner=self.request.user)
+            # serializer.save(owner=self.request.user)
+            serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
