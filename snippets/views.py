@@ -338,7 +338,7 @@ class LoginCommit(APIView):
         ID = request.POST["ID"]
         # PW = request.POST["PW"]
         PW = "mjw112415"
-        # user = UserManagement()
+        user = UserManagement()
 
         loginCheck = EclassCheck()
         userName = loginCheck.check(ID, PW)
