@@ -352,7 +352,7 @@ class LoginCommit(APIView):
                 # user.login(ID, PW)
                 return Response('error')
 
-        return JSONResponse(userName)
+        # return JSONResponse(userName)
         # user.login(ID, PW)
         return Response(userName)
 
