@@ -5,12 +5,12 @@ from bs4 import BeautifulSoup
 import time
 
 class EclassCheck:
-    def check(self):
+    def check(self, ID, PW):
         #### LOGIN INFO ####
         # 헤더에 실어보낼 값
         login_info={
-                'userDTO.userId':'2014112025', # YourID
-                'userDTO.password':'wlsduddl14!' # YourPW
+                'userDTO.userId':ID, # YourID 2014112025
+                'userDTO.password':PW # YourPW wlsduddl14!
         }
 
         #### LOGIN OPERATION ####
