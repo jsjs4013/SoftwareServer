@@ -99,7 +99,7 @@
 #         return self.destroy(request, *args, **kwargs)
 
 from snippets.models import Snippet
-from snippets.serializers import SnippetSerializer
+from snippets.serializers import SnippetSerializer, UserSerializer
 # from snippets.loginCommit import EclassCheck
 from rest_framework import generics, permissions, renderers, viewsets
 # from django.contrib.auth.models import User
@@ -259,7 +259,7 @@ class SnippetDetail(generics.RetrieveUpdateDestroyAPIView):
 #         return Response(status=status.HTTP_204_NO_CONTENT)
 
 from snippets.models import Snippet
-from snippets.serializers import SnippetSerializer
+from snippets.serializers import SnippetSerializer, UserSerializer
 from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -272,38 +272,39 @@ from rest_framework.permissions import IsAuthenticated
 from snippets.permissions import IsOwnerOrReadOnly
 from django.contrib.auth.models import User
 
+from rest_framework_jwt import authentication
 
-# class UserList(generics.ListAPIView):
-#     queryset = User.objects.all()
-#     serializer_class = UserSerializer
-#
-#
-# class UserDetail(generics.RetrieveAPIView):
-#     queryset = User.objects.all()
-#     serializer_class = UserSerializer
+
+class UserList(generics.ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+
+class UserDetail(generics.RetrieveAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
 
 
 class SnippetList(APIView):
     """
     코드 조각을 모두 보여주거나 새 코드 조각을 만듭니다.
     """
-    # permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
-
+    authentication_classes = (authentication.JSONWebTokenAuthentication,)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
     def get(self, request, format=None):
         snippets = Snippet.objects.all()
         serializer = SnippetSerializer(snippets, many=True)
-        return Response(serializer.data)
-        # return Response(User.objects.values())
+        # return Response(serializer.data)
+        return Response(User.objects.values())
 
     def post(self, request, format=None):
         serializer = SnippetSerializer(data=request.data)
         if serializer.is_valid():
-            # serializer.save(owner=self.request.user)
-            serializer.save()
+            serializer.save(owner=self.request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
+# ///////////////////////////////////////////////////////////////////
 from django.http import HttpResponse
 from rest_framework.renderers import JSONRenderer
 
@@ -316,13 +317,27 @@ class JSONResponse(HttpResponse):
         content = JSONRenderer().render(data)
         kwargs['content_type'] = 'application/json'
         super(JSONResponse, self).__init__(content, **kwargs)
+# ///////////////////////////////////////////////////////////////////
+class UserManagement():
+    def login(self, ID, PW):
+        # User.objects.get(username="2014112022").delete()
+        try:
+            user = User.objects.get(username=ID)
+
+            if not user.check_password(PW):
+                user.set_password(PW)
+                user.save()
+        except User.DoesNotExist:
+            user = User(username=ID)
+            user.set_password(PW)
+            user.save()
 
 
 class LoginCommit(APIView):
     def post(self, request, format=None):
         ID = request.POST["ID"]
-        PW = request.POST["PW"]
-        # PW = "mjw!112415"
+        # PW = request.POST["PW"]
+        PW = "mjw!112415"
 
         loginCheck = EclassCheck()
         userName = loginCheck.check(ID, PW)
@@ -331,15 +346,16 @@ class LoginCommit(APIView):
         while userName == False:
             userName = loginCheck.check(ID, PW)
             i += 1
-            
+
             if i == 10:
+                user = UserManagement()
+                user.login(ID, PW)
                 return Response('error')
         # data = request.POST['PW']
-        return JSONResponse(userName)
-        # if userName != False:
-        #     return Response(userName)
-        # else:
-        #     return Response('error', status=status.HTTP_400_BAD_REQUEST)
+        # return JSONResponse(userName)
+        user = UserManagement()
+        user.login(ID, PW)
+        return Response(userName)
 
 # class SnippetDetail(APIView):
 #     """
