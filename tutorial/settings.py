@@ -42,16 +42,16 @@ INSTALLED_APPS = [
     'rest_framework_jwt',
 ]
 
-# REST_FRAMEWORK = {
-#     # 'DEFAULT_PERMISSION_CLASSES': (
-#     #     'rest_framework.permissions.IsAuthenticated',
-#     # ),
-#     'DEFAULT_AUTHENTICATION_CLASSES': (
-#         # 'rest_framework.authentication.SessionAuthentication',
-#         # 'rest_framework.authentication.BasicAuthentication',
-#         # 'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
-#     ),
-# }
+REST_FRAMEWORK = {
+    # 'DEFAULT_PERMISSION_CLASSES': (
+    #     'rest_framework.permissions.IsAuthenticated',
+    # ),
+    # 'DEFAULT_AUTHENTICATION_CLASSES': (
+        # 'rest_framework.authentication.SessionAuthentication',
+        # 'rest_framework.authentication.BasicAuthentication',
+        # 'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+    # ),
+}
 
 '''
 curl -X POST -d "username=jsjs401&password=mjw112415" http://localhost:8000/api-token-auth/
