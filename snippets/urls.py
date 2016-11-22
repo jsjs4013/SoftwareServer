@@ -65,10 +65,14 @@ from snippets import views
 from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token, verify_jwt_token
 from snippets.utils import obtain_jwt_token_custom
 
+
 urlpatterns = [
     url(r'^snippets/$', views.SnippetList.as_view()),
-    url(r'^loginCheck/$', views.LoginCommit.as_view()),
     url(r'^snippets/(?P<pk>[0-9]+)/$', views.SnippetDetail.as_view()),
+
+    url(r'^loginCheck/$', views.LoginCommit.as_view()),
+    url(r'^signup/$', views.UserManage.as_view()),
+    url(r'^checkpw/$', views.ChangePasswordView.as_view()),
 
     url(r'^users/$', views.UserList.as_view()),
     url(r'^users/(?P<pk>[0-9]+)/$', views.UserDetail.as_view()),

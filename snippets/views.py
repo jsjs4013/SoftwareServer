@@ -259,7 +259,7 @@ class SnippetDetail(generics.RetrieveUpdateDestroyAPIView):
 #         return Response(status=status.HTTP_204_NO_CONTENT)
 
 from snippets.models import Snippet
-from snippets.serializers import SnippetSerializer, UserSerializer
+from snippets.serializers import SnippetSerializer, UserSerializer, ChangePasswordSerializer
 from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -273,6 +273,7 @@ from snippets.permissions import IsOwnerOrReadOnly
 from django.contrib.auth.models import User
 
 from rest_framework_jwt import authentication
+from rest_framework.generics import CreateAPIView, UpdateAPIView
 
 
 class UserList(generics.ListAPIView):
@@ -285,6 +286,44 @@ class UserDetail(generics.RetrieveAPIView):
     serializer_class = UserSerializer
 
 
+class UserManage(CreateAPIView):
+
+    model = User
+    permission_classes = (permissions.AllowAny,)
+    serializer_class = UserSerializer
+
+
+class ChangePasswordView(UpdateAPIView):
+    """
+    An endpoint for changing password.
+    """
+    serializer_class = ChangePasswordSerializer
+    model = User
+    authentication_classes = (authentication.JSONWebTokenAuthentication,)
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get_object(self, queryset=None):
+        obj = self.request.user
+        return obj
+
+    def update(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        serializer = self.get_serializer(data=request.data)
+
+        if serializer.is_valid():
+            # Check old password
+            if self.object.check_password(serializer.data.get("old_password")):
+                return Response("No change.", status=status.HTTP_200_OK)
+                # return Response({"old_password": ["Wrong password."]}, status=status.HTTP_400_BAD_REQUEST)
+            # set_password also hashes the password that the user will get
+            self.object.set_password(serializer.data.get("new_password"))
+            self.object.save()
+
+            return Response("Success.", status=status.HTTP_200_OK)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 class SnippetList(APIView):
     """
     코드 조각을 모두 보여주거나 새 코드 조각을 만듭니다.
@@ -294,8 +333,8 @@ class SnippetList(APIView):
     def get(self, request, format=None):
         snippets = Snippet.objects.all()
         serializer = SnippetSerializer(snippets, many=True)
-        # return Response(serializer.data)
-        return Response(User.objects.values())
+        return Response(serializer.data)
+        # return Response(User.objects.values())
 
     def post(self, request, format=None):
         serializer = SnippetSerializer(data=request.data)
@@ -354,7 +393,12 @@ class LoginCommit(APIView):
 
         # return JSONResponse(userName)
         # user.login(ID, PW)
-        return Response(userName)
+        try:
+            User.objects.get(username=ID)
+
+            return Response({'username':userName, 'overlap':1})
+        except User.DoesNotExist:
+            return Response({'username':userName, 'overlap':0})
 
 # class SnippetDetail(APIView):
 #     """

@@ -63,6 +63,8 @@ curl -X POST -d "ID=2014112022"  http://127.0.0.1:8000/loginCheck/
 curl -X POST -d "ID=2014112025&PW=wlsduddl14!"  http://127.0.0.1:8000/loginCheck
 
 curl -H "Authorization: JWT "  http://127.0.0.1:8000/
+
+curl -X POST -H "Content-Type: application/json" -d '{"token":"<EXISTING_TOKEN>"}' http://localhost:8000/api-token-refresh/
 '''
 
 MIDDLEWARE_CLASSES = [
