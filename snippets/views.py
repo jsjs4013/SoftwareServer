@@ -98,12 +98,12 @@
 #     def delete(self, request, *args, **kwargs):
 #         return self.destroy(request, *args, **kwargs)
 
-from snippets.models import Snippet
-from snippets.serializers import SnippetSerializer, UserSerializer
+# from snippets.models import Snippet
+# from snippets.serializers import SnippetSerializer, UserSerializer
 # from snippets.loginCommit import EclassCheck
-from rest_framework import generics, permissions, renderers, viewsets
+# from rest_framework import generics, permissions, renderers, viewsets
 # from django.contrib.auth.models import User
-from snippets.permissions import IsOwnerOrReadOnly
+# from snippets.permissions import IsOwnerOrReadOnly
 #
 # from rest_framework.decorators import api_view, detail_route
 # from rest_framework.response import Response
@@ -145,11 +145,11 @@ from snippets.permissions import IsOwnerOrReadOnly
 #         serializer.save(owner=self.request.user)
 #
 #
-class SnippetDetail(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly,)
-
-    queryset = Snippet.objects.all()
-    serializer_class = SnippetSerializer
+# class SnippetDetail(generics.RetrieveUpdateDestroyAPIView):
+#     permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly,)
+#
+#     queryset = Snippet.objects.all()
+#     serializer_class = SnippetSerializer
 
 # class SnippetViewSet(viewsets.ModelViewSet):
 #     """
