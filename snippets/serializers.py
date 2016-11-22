@@ -69,7 +69,7 @@ class ChangePasswordSerializer(serializers.Serializer):
 
 
 class SnippetSerializer(serializers.ModelSerializer):
-    owner = serializers.ReadOnlyField(source='owner.username')
+    # owner = serializers.ReadOnlyField(source='owner.username')
 
     class Meta:
         model = Snippet
