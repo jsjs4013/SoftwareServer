@@ -377,8 +377,7 @@ class JSONResponse(HttpResponse):
 class LoginCommit(APIView):
     def post(self, request, format=None):
         ID = request.POST["ID"]
-        # PW = request.POST["PW"]
-        PW = "mjw!112415"
+        PW = request.POST["PW"]
         # user = UserManagement()
 
         loginCheck = EclassCheck()
