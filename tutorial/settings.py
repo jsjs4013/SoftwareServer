@@ -58,9 +58,9 @@ curl -X POST -d "username=jsjs401&password=mjw112415" http://localhost:8000/api-
 
 curl -H "Authorization: JWT " http://localhost:8000/protected-url/
 
-curl -X POST -d "ID=2014112022"  http://127.0.0.1:8000/loginCheck/
+curl -X POST -d "ID=2014112022" http://127.0.0.1:8000/loginCheck/
 
-curl -X POST -d "ID=2014112025&PW=wlsduddl14!"  http://127.0.0.1:8000/loginCheck
+curl -X POST -d "ID=2014112025&PW=wlsduddl14!" http://127.0.0.1:8000/loginCheck
 
 curl -H "Authorization: JWT "  http://127.0.0.1:8000/
 
