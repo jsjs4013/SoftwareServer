@@ -63,7 +63,7 @@ from rest_framework.urlpatterns import format_suffix_patterns
 from snippets import views
 
 from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token, verify_jwt_token
-from snippets.utils import obtain_jwt_token_custom
+# from snippets.utils import obtain_jwt_token_custom
 
 
 urlpatterns = [
