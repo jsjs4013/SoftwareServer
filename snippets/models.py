@@ -62,8 +62,8 @@ def save(self, *args, **kwargs):
     super(Snippet, self).save(*args, **kwargs)
 
 class Snippet(models.Model):
-    owner = models.ForeignKey('auth.User', related_name='snippets')
-    highlighted = models.TextField()
+    # owner = models.ForeignKey('auth.User', related_name='snippets')
+    # highlighted = models.TextField()
 
     created = models.DateTimeField(auto_now_add=True)
     title = models.CharField(max_length=100, blank=True, default='')
