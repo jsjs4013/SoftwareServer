@@ -2,7 +2,6 @@ import urllib
 import http.cookiejar
 import ssl
 from bs4 import BeautifulSoup
-import time
 
 class EclassCheck:
     def check(self, ID, PW):
