@@ -14,9 +14,13 @@ urlpatterns = [
     url(r'^application/book/$', views.BuyCheckBook.as_view()),
     url(r'^application/del/book/(?P<pk>[0-9]+)/$', views.BookCheckDetail.as_view()),
 
+    url(r'^search/book/(?P<bookName>.+)/$', views.SearchBook.as_view()),
+    url(r'^search/book/$', views.SearchBook.as_view()),
+
     url(r'^users/$', views.UserList.as_view()),
     url(r'^users/(?P<pk>[0-9]+)/$', views.UserDetail.as_view()),
     url(r'^users/(?P<pk>[0-9]+)/my/register/book/$', views.MyBookList.as_view()),
+    url(r'^users/(?P<pk>[0-9]+)/my/request/book/$', views.MyRequestList.as_view()),
 
     url(r'^api-token-auth/', obtain_jwt_token),
     url(r'^api-token-refresh/', refresh_jwt_token),

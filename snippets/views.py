@@ -1,6 +1,7 @@
 from snippets.models import UsedBook, Request
 from snippets.serializers import UserSerializer, UsedBookSerializer, RequestSerializer
 from django.http import Http404
+from django.db.models import query
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, generics, permissions, authentication
@@ -109,9 +110,7 @@ class BookDetail(APIView):
         permission = checkUser()
 
         if permission.permissionDelBuy(snippet, self.request.user):
-            filterSet = Request.objects.filter(bookId=pk)
-            for filter in filterSet:
-                filter.delete()
+            Request.objects.filter(bookId=pk).delete()
 
             return Response(status=status.HTTP_204_NO_CONTENT)
         raise Http404
@@ -128,7 +127,7 @@ class MyBookList(APIView):
     def get_object(self, pk):
         try:
             return User.objects.get(pk=pk)
-        except UsedBook.DoesNotExist:
+        except User.DoesNotExist:
             raise Http404
 
     def get(self, request, pk, format=None):
@@ -142,6 +141,69 @@ class MyBookList(APIView):
             return Response(serializer.data)
 
         raise Http404
+
+
+class MyRequestList(APIView):
+    """
+    코드 조각 조회, 업데이트, 삭제
+    """
+
+    authentication_classes = (authentication.JSONWebTokenAuthentication,)
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get_object(self, pk):
+        try:
+            return User.objects.get(pk=pk)
+        except User.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, format=None):
+        snippet = self.get_object(pk)
+        user = self.request.user
+        bookList = []
+        requestList = []
+
+        if snippet.username == str(user):
+            snippet = user.requestbuyers.all()
+            for snippetFilter in snippet:
+                bookList.append(snippetFilter.bookId)
+            for snippetFilter in bookList:
+                try:
+                    book = UsedBook.objects.get(pk=snippetFilter)
+
+
+                    requestList.append({'author' : book.author, 'bookTitle' : book.bookTitle,
+                                        'cource' : book.cource, 'id' : book.pk,
+                                        'isbn' : book.isbn, 'owner' : str(book.owner),
+                                        'professor' : book.professor, 'publisher' : book.publisher})
+                except UsedBook.DoesNotExist:
+                    raise Http404
+
+            return Response(requestList)
+
+        raise Http404
+
+
+class SearchBook(APIView):
+    """
+    코드 조각 조회, 업데이트, 삭제
+    """
+
+    authentication_classes = (authentication.JSONWebTokenAuthentication,)
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request, bookName, format=None):
+        search = UsedBook.objects.filter(bookTitle__icontains=bookName)
+        serializer = UsedBookSerializer(search, many=True)
+
+        return Response(serializer.data)
+
+    def post(self, request, format=None):
+        bookName = request.POST['bookName']
+        search = UsedBook.objects.filter(bookTitle__icontains=bookName)
+        serializer = UsedBookSerializer(search, many=True)
+
+        return Response(serializer.data)
 
 
 class BuyCheckBook(APIView):
@@ -165,7 +227,7 @@ class BuyCheckBook(APIView):
                 UsedBook.objects.get(pk=bookId)
 
                 filterSet = user.books.all()
-                if filterSet.filter(id=bookId):
+                if filterSet.filter(pk=bookId):
                     raise Http404
 
                 filterSet = user.requestbuyers.all()
