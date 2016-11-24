@@ -166,16 +166,17 @@ class MyRequestList(APIView):
         if snippet.username == str(user):
             snippet = user.requestbuyers.all()
             for snippetFilter in snippet:
-                bookList.append(snippetFilter.bookId)
+                bookList.append((snippetFilter.pk, snippetFilter.bookId))
             for snippetFilter in bookList:
                 try:
-                    book = UsedBook.objects.get(pk=snippetFilter)
+                    book = UsedBook.objects.get(pk=snippetFilter[1])
 
 
                     requestList.append({'author' : book.author, 'bookTitle' : book.bookTitle,
                                         'cource' : book.cource, 'id' : book.pk,
                                         'isbn' : book.isbn, 'owner' : str(book.owner),
-                                        'professor' : book.professor, 'publisher' : book.publisher})
+                                        'professor' : book.professor, 'publisher' : book.publisher,
+                                        'requestId' : snippetFilter[0]})
                 except UsedBook.DoesNotExist:
                     raise Http404
 
@@ -204,6 +205,33 @@ class SearchBook(APIView):
         serializer = UsedBookSerializer(search, many=True)
 
         return Response(serializer.data)
+
+
+class MyBuyBook(APIView):
+    """
+    코드 조각 조회, 업데이트, 삭제
+    """
+
+    authentication_classes = (authentication.JSONWebTokenAuthentication,)
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get_object(self, pk):
+        try:
+            return User.objects.get(pk=pk)
+        except User.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, bookId, format=None):
+        snippet = self.get_object(pk)
+        user = self.request.user
+
+        if snippet.username == str(user):
+            snippet = Request.objects.filter(bookId=bookId)
+            serializer = RequestSerializer(snippet, many=True)
+
+            return Response(serializer.data)
+
+        raise Http404
 
 
 class BuyCheckBook(APIView):
