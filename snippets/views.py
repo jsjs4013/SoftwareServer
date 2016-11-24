@@ -36,7 +36,7 @@ class UserManage(CreateAPIView):
 class LoginCommit(APIView):
     def post(self, request, format=None):
         ID = request.POST.get("ID", '')
-        PW = request.POST("PW", '')
+        PW = request.POST.get("PW", '')
 
         loginCheck = EclassCheck()
         userName = loginCheck.check(ID, PW)
@@ -115,6 +115,28 @@ class BookDetail(APIView):
 
             return Response(status=status.HTTP_204_NO_CONTENT)
         raise Http404
+
+
+class MyBookList(APIView):
+    """
+    코드 조각을 모두 보여주거나 새 코드 조각을 만듭니다.
+    """
+    authentication_classes = (authentication.JSONWebTokenAuthentication,)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    def get(self, request, format=None):
+        books = UsedBook.objects.all()
+        serializer = UsedBookSerializer(books, many=True)
+
+        return Response(serializer.data)
+
+    def post(self, request, format=None):
+        serializer = UsedBookSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(owner=self.request.user)
+
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class BuyCheckBook(APIView):
