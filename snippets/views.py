@@ -119,24 +119,29 @@ class BookDetail(APIView):
 
 class MyBookList(APIView):
     """
-    코드 조각을 모두 보여주거나 새 코드 조각을 만듭니다.
+    코드 조각 조회, 업데이트, 삭제
     """
+
     authentication_classes = (authentication.JSONWebTokenAuthentication,)
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
-    def get(self, request, format=None):
-        books = UsedBook.objects.all()
-        serializer = UsedBookSerializer(books, many=True)
+    permission_classes = (permissions.IsAuthenticated,)
 
-        return Response(serializer.data)
+    def get_object(self, pk):
+        try:
+            return User.objects.get(pk=pk)
+        except UsedBook.DoesNotExist:
+            raise Http404
 
-    def post(self, request, format=None):
-        serializer = UsedBookSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save(owner=self.request.user)
+    def get(self, request, pk, format=None):
+        snippet = self.get_object(pk)
+        user = self.request.user
 
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        if snippet.username == str(user):
+            snippet = user.books.all()
+            serializer = UsedBookSerializer(snippet, many=True)
 
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.data)
+
+        raise Http404
 
 
 class BuyCheckBook(APIView):

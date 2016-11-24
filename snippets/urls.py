@@ -16,6 +16,7 @@ urlpatterns = [
 
     url(r'^users/$', views.UserList.as_view()),
     url(r'^users/(?P<pk>[0-9]+)/$', views.UserDetail.as_view()),
+    url(r'^users/(?P<pk>[0-9]+)/my/register/book/$', views.MyBookList.as_view()),
 
     url(r'^api-token-auth/', obtain_jwt_token),
     url(r'^api-token-refresh/', refresh_jwt_token),
