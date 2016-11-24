@@ -35,8 +35,8 @@ class UserManage(CreateAPIView):
 
 class LoginCommit(APIView):
     def post(self, request, format=None):
-        ID = request.POST["ID"]
-        PW = request.POST["PW"]
+        ID = request.POST.get("ID", '')
+        PW = request.POST("PW", '')
 
         loginCheck = EclassCheck()
         userName = loginCheck.check(ID, PW)
@@ -134,15 +134,18 @@ class BuyCheckBook(APIView):
         bookId = request.POST['bookId']
         serializer = RequestSerializer(data=request.data)
         if serializer.is_valid():
-            filterSet = user.books.all()
-            for filter in filterSet:
-                if filter.id == int(bookId):
+            try:
+                UsedBook.objects.get(pk=bookId)
+
+                filterSet = user.books.all()
+                if filterSet.filter(id=bookId):
                     raise Http404
 
-            filterSet = user.requestbuyers.all()
-            for filter in filterSet:
-                if filter.bookId == bookId:
+                filterSet = user.requestbuyers.all()
+                if filterSet.filter(bookId=bookId):
                     raise Http404
+            except UsedBook.DoesNotExist:
+                raise Http404
 
             serializer.save(owner=self.request.user)
 
