@@ -38,12 +38,15 @@ class UserManage(CreateAPIView):
 
 class LoginCommit(APIView):
     def post(self, request, format=None):
-        # received_json_data = json.loads(request.body)
         received_json_data = json.loads(request.body.decode("utf-8"))
-        return Response(received_json_data)
 
-        ID = request.POST.get("ID", '')
-        PW = request.POST.get("PW", '')
+        # ID = request.POST.get("ID", '')
+        # PW = request.POST.get("PW", '')
+
+        ID = received_json_data['ID']
+        PW = received_json_data['PW']
+
+        return Response(ID)
 
         loginCheck = EclassCheck()
         userName = loginCheck.check(ID, PW)
@@ -54,17 +57,17 @@ class LoginCommit(APIView):
             i += 1
 
             if i == 10:
-                # return Response('error')
-                return Response((ID, PW))
+                return Response('error')
+                # return Response((ID, PW))
         try:
             User.objects.get(username=ID)
 
-            return Response((ID, PW))
+            # return Response((ID, PW))
 
-            # return Response({'username':userName, 'overlap':1})
+            return Response({'username':userName, 'overlap':1})
         except User.DoesNotExist:
-            return Response((ID, PW))
-            # return Response({'username':userName, 'overlap':0})
+            # return Response((ID, PW))
+            return Response({'username':userName, 'overlap':0})
 
 
 class BookList(APIView):
