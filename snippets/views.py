@@ -16,8 +16,6 @@ from django.contrib.auth.models import User
 from rest_framework_jwt import authentication
 from rest_framework.generics import CreateAPIView, UpdateAPIView
 
-import json
-
 
 class UserList(generics.ListAPIView):
     queryset = User.objects.all()
@@ -38,13 +36,10 @@ class UserManage(CreateAPIView):
 
 class LoginCommit(APIView):
     def post(self, request, format=None):
-        received_json_data = json.loads(request.body.decode("utf-8"))
+        ID = request.POST.get("ID", '')
+        PW = request.POST.get("PW", '')
 
-        # ID = request.POST.get("ID", '')
-        # PW = request.POST.get("PW", '')
-
-        ID = received_json_data['ID']
-        PW = received_json_data['PW']
+        return Response((ID, PW))
 
         loginCheck = EclassCheck()
         userName = loginCheck.check(ID, PW)
@@ -56,15 +51,11 @@ class LoginCommit(APIView):
 
             if i == 10:
                 return Response('error')
-                # return Response((ID, PW))
         try:
             User.objects.get(username=ID)
 
-            # return Response((ID, PW))
-
             return Response({'username':userName, 'overlap':1})
         except User.DoesNotExist:
-            # return Response((ID, PW))
             return Response({'username':userName, 'overlap':0})
 
 
