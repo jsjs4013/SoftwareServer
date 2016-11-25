@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'snippets.apps.SnippetsConfig',
     'rest_framework_jwt',
-    'corsheaders',
 ]
 
 REST_FRAMEWORK = {
