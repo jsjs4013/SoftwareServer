@@ -48,13 +48,17 @@ class LoginCommit(APIView):
             i += 1
 
             if i == 10:
-                return Response('error')
+                # return Response('error')
+                return Response((ID, PW))
         try:
             User.objects.get(username=ID)
 
-            return Response({'username':userName, 'overlap':1})
+            return Response((ID, PW))
+
+            # return Response({'username':userName, 'overlap':1})
         except User.DoesNotExist:
-            return Response({'username':userName, 'overlap':0})
+            return Response((ID, PW))
+            # return Response({'username':userName, 'overlap':0})
 
 
 class BookList(APIView):
