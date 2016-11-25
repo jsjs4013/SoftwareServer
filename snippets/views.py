@@ -16,6 +16,8 @@ from django.contrib.auth.models import User
 from rest_framework_jwt import authentication
 from rest_framework.generics import CreateAPIView, UpdateAPIView
 
+import json
+
 
 class UserList(generics.ListAPIView):
     queryset = User.objects.all()
@@ -36,6 +38,10 @@ class UserManage(CreateAPIView):
 
 class LoginCommit(APIView):
     def post(self, request, format=None):
+        # received_json_data = json.loads(request.body)
+        received_json_data = json.loads(request.body.decode("utf-8"))
+        return Response(received_json_data)
+
         ID = request.POST.get("ID", '')
         PW = request.POST.get("PW", '')
 
