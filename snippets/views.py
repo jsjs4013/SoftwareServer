@@ -46,7 +46,7 @@ class LoginCommit(APIView):
         ID = received_json_data['ID']
         PW = received_json_data['PW']
 
-        return Response(PW)
+        return Response(received_json_data)
 
         loginCheck = EclassCheck()
         userName = loginCheck.check(ID, PW)
