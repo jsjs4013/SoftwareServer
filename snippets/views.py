@@ -1,4 +1,4 @@
-from snippets.models import UsedBook, Request
+from snippets.models import User, UsedBook, Request
 from snippets.serializers import UserSerializer, UsedBookSerializer, RequestSerializer
 from django.http import Http404
 from django.db.models import query
@@ -11,7 +11,6 @@ from rest_framework.authentication import SessionAuthentication, BasicAuthentica
 from rest_framework.permissions import IsAuthenticated
 
 from snippets.permissions import IsOwnerOrReadOnly, checkUser
-from django.contrib.auth.models import User
 
 from rest_framework_jwt import authentication
 from rest_framework.generics import CreateAPIView, UpdateAPIView

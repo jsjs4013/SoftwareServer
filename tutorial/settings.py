@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 import os
 import datetime
 
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -27,6 +28,8 @@ SECRET_KEY = '0+f53a5k!dquc3d+9vj%j^50gh2$qvw-y)is&4a$2qrotdj0(9'
 DEBUG = True
 
 ALLOWED_HOSTS = '*'
+
+AUTH_USER_MODEL = 'snippets.User'
 
 # Application definition
 
@@ -101,6 +104,7 @@ WSGI_APPLICATION = 'tutorial.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
+
 
 DATABASES = {
     'default': {
