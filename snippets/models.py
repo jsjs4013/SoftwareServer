@@ -28,7 +28,7 @@ class UsedBook(models.Model):
     isbn = models.CharField(max_length=100, blank=True, default='')
     cource = models.CharField(max_length=100, blank=True, default='')
     professor = models.CharField(max_length=100, blank=True, default='')
-    comment = models.TextField()
+    comment = models.TextField(blank=True, default='')
     status = models.CharField(max_length=100, blank=True, default='')
     price = models.CharField(max_length=100, blank=True, default='')
     sellerPrice = models.CharField(max_length=100, blank=True, default='')
