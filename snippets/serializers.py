@@ -3,8 +3,8 @@ from snippets.models import LANGUAGE_CHOICES, STYLE_CHOICES, User, UsedBook, Req
 
 
 class UserSerializer(serializers.ModelSerializer):
-    books = serializers.PrimaryKeyRelatedField(many=True, queryset=UsedBook.objects.all(), allow_null=True)
-    requestbuyers = serializers.PrimaryKeyRelatedField(many=True, queryset=Request.objects.all(), allow_null=True)
+    books = serializers.PrimaryKeyRelatedField(many=True, queryset=UsedBook.objects.all(), required=False)
+    requestbuyers = serializers.PrimaryKeyRelatedField(many=True, queryset=Request.objects.all(), required=False)
     password = serializers.CharField(write_only=True)
 
     def create(self, validated_data):
