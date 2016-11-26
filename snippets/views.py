@@ -59,9 +59,9 @@ class LoginCommit(APIView):
         try:
             User.objects.get(username=ID)
 
-            return Response({'username':i, 'overlap':1})
+            return Response({'username':userName, 'overlap':1})
         except User.DoesNotExist:
-            return Response({'username':userName, 'overlap':0})
+            return Response({'username':i, 'overlap':0})
 
 
 class TestLoginCommit(APIView):
