@@ -2,6 +2,7 @@ import urllib
 import http.cookiejar
 import ssl
 from bs4 import BeautifulSoup
+import socket
 
 class EclassCheck:
     def check(self, ID, PW):
@@ -26,7 +27,9 @@ class EclassCheck:
         try:
             with urllib.request.urlopen(req) as response:  # Request 전송
                 req = response.read()
-        except Exception:
+        except urllib.request.URLError:
+            return False
+        except socket.timeout:
             return False
 
         #### LOGIN CHECK ####
