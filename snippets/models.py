@@ -28,7 +28,11 @@ class UsedBook(models.Model):
     isbn = models.CharField(max_length=100, blank=True, default='')
     cource = models.CharField(max_length=100, blank=True, default='')
     professor = models.CharField(max_length=100, blank=True, default='')
-    content = models.TextField()
+    comment = models.TextField()
+    status = models.CharField(max_length=100, blank=True, default='')
+    price = models.CharField(max_length=100, blank=True, default='')
+    pubdate = models.CharField(max_length=100, blank=True, default='')
+    image = models.CharField(max_length=100, blank=True, default='')
 
     class Meta:
         ordering = ('created',)
