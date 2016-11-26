@@ -31,6 +31,7 @@ class UsedBook(models.Model):
     comment = models.TextField()
     status = models.CharField(max_length=100, blank=True, default='')
     price = models.CharField(max_length=100, blank=True, default='')
+    sellerPrice = models.CharField(max_length=100, blank=True, default='')
     pubdate = models.CharField(max_length=100, blank=True, default='')
     image = models.CharField(max_length=100, blank=True, default='')
 

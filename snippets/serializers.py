@@ -67,7 +67,7 @@ class UsedBookSerializer(serializers.ModelSerializer):
     class Meta:
         model = UsedBook
         fields = ('id', 'bookTitle', 'author', 'publisher', 'isbn', 'cource', 'professor', 'comment', 'status',
-                  'price', 'pubdate', 'image', 'owner')
+                  'sellerPrice', 'price', 'pubdate', 'image', 'owner')
 
 
 class RequestSerializer(serializers.ModelSerializer):
