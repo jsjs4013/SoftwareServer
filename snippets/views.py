@@ -36,7 +36,7 @@ class UserManage(CreateAPIView):
 
 
 class LoginCommit(APIView):
-    def post(self, request, my_parameter, my_parameters, format=None):
+    def get(self, request, my_parameter, my_parameters, format=None):
         # received_json_data = json.loads(request.body.decode("utf-8"))
         # ID = received_json_data['ID']
         # PW = received_json_data['PW']
