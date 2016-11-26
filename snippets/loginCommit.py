@@ -31,6 +31,8 @@ class EclassCheck:
             return False
         except socket.timeout:
             return False
+        finally:
+            return True
 
         #### LOGIN CHECK ####
         main_url = 'https://eclass.dongguk.edu/Main.do?cmd=viewEclassMain&mainMenuId=menu_00050&subMenuId=&menuType=menu'
@@ -43,4 +45,4 @@ class EclassCheck:
                 userName = userName.strip()  # 양쪽 끝의 공백 문자 제거
                 return userName  # user 이름 가져오기
         except  AttributeError:
-                return True
+                return False
