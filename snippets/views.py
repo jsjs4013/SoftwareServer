@@ -59,6 +59,15 @@ class LoginCommit(APIView):
             return Response({'username':userName, 'overlap':0})
 
 
+class TestCheck(APIView):
+    def post(self, request, format=None):
+        received_json_data = json.loads(request.body.decode("utf-8"))
+        ID = received_json_data['ID']
+        PW = received_json_data['PW']
+
+        return Response((ID, PW))
+
+
 class BookList(APIView):
     """
     코드 조각을 모두 보여주거나 새 코드 조각을 만듭니다.

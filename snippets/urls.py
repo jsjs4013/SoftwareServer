@@ -23,6 +23,8 @@ urlpatterns = [
     url(r'^users/(?P<pk>[0-9]+)/my/request/book/$', views.MyRequestList.as_view()),
     url(r'^users/(?P<pk>[0-9]+)/my/buy/book/(?P<bookId>[0-9]+)/$', views.MyBuyBook.as_view()),
 
+    url(r'^test/$', views.TestCheck.as_view()),
+
     url(r'^api-token-auth/', obtain_jwt_token),
     url(r'^api-token-refresh/', refresh_jwt_token),
     url(r'^api-token-verify/', verify_jwt_token),
