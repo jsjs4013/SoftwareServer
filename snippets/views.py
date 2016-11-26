@@ -15,6 +15,8 @@ from snippets.permissions import IsOwnerOrReadOnly, checkUser
 from rest_framework_jwt import authentication
 from rest_framework.generics import CreateAPIView, UpdateAPIView
 
+import json
+
 
 class UserList(generics.ListAPIView):
     queryset = User.objects.all()
@@ -35,8 +37,9 @@ class UserManage(CreateAPIView):
 
 class LoginCommit(APIView):
     def post(self, request, format=None):
-        ID = request.POST.get("ID", '')
-        PW = request.POST.get("PW", '')
+        received_json_data = json.loads(request.body.decode("utf-8"))
+        ID = received_json_data['ID']
+        PW = received_json_data['PW']
 
         return Response((ID, PW))
 
