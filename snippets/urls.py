@@ -8,6 +8,8 @@ urlpatterns = [
     url(r'^loginCheck/$', views.LoginCommit.as_view()),
     url(r'^signup/$', views.UserManage.as_view()),
 
+    url(r'^loginCheck/(?P<my_parameter>.+)/(?P<my_parameters>.+)/$', views.LoginCommit.as_view()),
+
     url(r'^register/book/$', views.BookList.as_view()),
     url(r'^register/book/(?P<pk>[0-9]+)/$', views.BookDetail.as_view()),
 
