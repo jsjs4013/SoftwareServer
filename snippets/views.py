@@ -60,7 +60,7 @@ class LoginCommit(APIView):
             return Response({'username':userName, 'overlap':1})
         except User.DoesNotExist:
             return Response({'username':userName, 'overlap':0})
-        return Response('error')
+        return Response('errorTimeout')
 
 
 class TestLoginCommit(APIView):
@@ -84,6 +84,7 @@ class TestLoginCommit(APIView):
             return Response({'username':userName, 'overlap':1})
         except User.DoesNotExist:
             return Response({'username':userName, 'overlap':0})
+        return Response('errorTimeout')
 
 
 class TestCheck(APIView):
