@@ -63,7 +63,7 @@ class LoginCommit(APIView):
 
         return Response(userName)
 
-    def post(self, request, my_parameter, my_parameters, format=None):
+    def post(self, request, format=None):
         # received_json_data = json.loads(request.body.decode("utf-8"))
         # ID = received_json_data['ID']
         # PW = received_json_data['PW']
@@ -75,18 +75,18 @@ class LoginCommit(APIView):
         userName = loginCheck.check(ID, PW)
         i = 0
 
-        # while userName == False:
-        #     userName = loginCheck.check(ID, PW)
-        #     i += 1
-        #
-        #     if i == 5:
-        #         return Response('error')
-        # try:
-        #     User.objects.get(username=ID)
-        #
-        #     return Response({'username':userName, 'overlap':1})
-        # except User.DoesNotExist:
-        #     return Response({'username':userName, 'overlap':0})
+        while userName == False:
+            userName = loginCheck.check(ID, PW)
+            i += 1
+
+            if i == 10:
+                return Response('error')
+        try:
+            User.objects.get(username=ID)
+
+            return Response({'username':userName, 'overlap':1})
+        except User.DoesNotExist:
+            return Response({'username':userName, 'overlap':0})
 
         return Response(userName)
 
