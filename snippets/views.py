@@ -48,18 +48,20 @@ class LoginCommit(APIView):
         userName = loginCheck.check(ID, PW)
         i = 0
 
-        while userName == False:
-            userName = loginCheck.check(ID, PW)
-            i += 1
+        # while userName == False:
+        #     userName = loginCheck.check(ID, PW)
+        #     i += 1
+        #
+        #     if i == 5:
+        #         return Response('error')
+        # try:
+        #     User.objects.get(username=ID)
+        #
+        #     return Response({'username':userName, 'overlap':1})
+        # except User.DoesNotExist:
+        #     return Response({'username':userName, 'overlap':0})
 
-            if i == 5:
-                return Response('error')
-        try:
-            User.objects.get(username=ID)
-
-            return Response({'username':userName, 'overlap':1})
-        except User.DoesNotExist:
-            return Response({'username':userName, 'overlap':0})
+        return Response(userName)
 
 
 class TestCheck(APIView):

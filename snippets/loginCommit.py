@@ -2,6 +2,7 @@ import urllib
 import http.cookiejar
 import ssl
 from bs4 import BeautifulSoup
+from urllib.error import HTTPError
 
 class EclassCheck:
     def check(self, ID, PW):
@@ -26,8 +27,8 @@ class EclassCheck:
         try:
             with urllib.request.urlopen(req) as response:  # Request 전송
                 req = response.read()
-        except Exception:
-            return False
+        except HTTPError as e:
+            return e.read()
 
         #### LOGIN CHECK ####
         main_url = 'https://eclass.dongguk.edu/Main.do?cmd=viewEclassMain&mainMenuId=menu_00050&subMenuId=&menuType=menu'
