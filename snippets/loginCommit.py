@@ -23,11 +23,8 @@ class EclassCheck:
         params=urllib.parse.urlencode(login_info) # login_info를 바탕으로 Request 할 수 있게 변환
         req=urllib.request.Request(login_url,params.encode('utf-8')) # Request 생성. Request의 인자를 string 형식으로 직접보낼 수 없음. 'utf-8'로 인코딩 해야 함.
 
-        try:
-            with urllib.request.urlopen(req) as response:  # Request 전송
-                req = response.read()
-        except Exception:
-            return False
+        with urllib.request.urlopen(req) as response:  # Request 전송
+            req = response.read()
 
         #### LOGIN CHECK ####
         main_url = 'https://eclass.dongguk.edu/Main.do?cmd=viewEclassMain&mainMenuId=menu_00050&subMenuId=&menuType=menu'

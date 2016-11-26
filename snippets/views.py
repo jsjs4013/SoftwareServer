@@ -36,33 +36,6 @@ class UserManage(CreateAPIView):
 
 
 class LoginCommit(APIView):
-    def get(self, request, my_parameter, my_parameters, format=None):
-        # received_json_data = json.loads(request.body.decode("utf-8"))
-        # ID = received_json_data['ID']
-        # PW = received_json_data['PW']
-
-        ID = my_parameter
-        PW = my_parameters
-
-        loginCheck = EclassCheck()
-        userName = loginCheck.check(ID, PW)
-        i = 0
-
-        while userName == False:
-            userName = loginCheck.check(ID, PW)
-            i += 1
-
-            if i == 10:
-                return Response('error')
-        try:
-            User.objects.get(username=ID)
-
-            return Response({'username':userName, 'overlap':1})
-        except User.DoesNotExist:
-            return Response({'username':userName, 'overlap':0})
-
-        return Response(userName)
-
     def post(self, request, format=None):
         # received_json_data = json.loads(request.body.decode("utf-8"))
         # ID = received_json_data['ID']
@@ -88,7 +61,32 @@ class LoginCommit(APIView):
         except User.DoesNotExist:
             return Response({'username':userName, 'overlap':0})
 
-        return Response(userName)
+
+class TestLoginCommit(APIView):
+    def get(self, request, my_parameter, my_parameters, format=None):
+        # received_json_data = json.loads(request.body.decode("utf-8"))
+        # ID = received_json_data['ID']
+        # PW = received_json_data['PW']
+
+        ID = my_parameter
+        PW = my_parameters
+
+        loginCheck = EclassCheck()
+        userName = loginCheck.check(ID, PW)
+        i = 0
+
+        while userName == False:
+            userName = loginCheck.check(ID, PW)
+            i += 1
+
+            if i == 10:
+                return Response('error')
+        try:
+            User.objects.get(username=ID)
+
+            return Response({'username':userName, 'overlap':1})
+        except User.DoesNotExist:
+            return Response({'username':userName, 'overlap':0})
 
 
 class TestCheck(APIView):
