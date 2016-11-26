@@ -60,6 +60,7 @@ class LoginCommit(APIView):
             return Response({'username':userName, 'overlap':1})
         except User.DoesNotExist:
             return Response({'username':userName, 'overlap':0})
+        return Response('error')
 
 
 class TestLoginCommit(APIView):
