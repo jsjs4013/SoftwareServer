@@ -43,4 +43,4 @@ class EclassCheck:
                 userName = userName.strip()  # 양쪽 끝의 공백 문자 제거
                 return userName  # user 이름 가져오기
         except  AttributeError:
-                return False
+                return True
