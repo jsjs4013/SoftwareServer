@@ -40,6 +40,7 @@ class LoginCommit(APIView):
         received_json_data = json.loads(request.body.decode("utf-8"))
         ID = received_json_data['ID']
         PW = received_json_data['PW']
+        
 
         # ID = request.POST['ID']
         # PW = request.POST['PW']
