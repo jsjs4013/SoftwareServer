@@ -48,33 +48,13 @@ class LoginCommit(APIView):
 
         loginCheck = EclassCheck()
         userName = loginCheck.check(ID, PW)
+        del loginCheck
         i = 0
 
         while userName == False:
+            loginCheck = EclassCheck()
             userName = loginCheck.check(ID, PW)
-            i += 1
-
-            if i == 10:
-                return Response('error')
-        try:
-            User.objects.get(username=ID)
-
-            return Response({'username':userName, 'overlap':1})
-        except User.DoesNotExist:
-            return Response({'username':i, 'overlap':0})
-
-
-class TestLoginCommit(APIView):
-    def get(self, request, my_parameter, my_parameters, format=None):
-        ID = my_parameter
-        PW = my_parameters
-
-        loginCheck = EclassCheck()
-        userName = loginCheck.check(ID, PW)
-        i = 0
-
-        while userName == False:
-            userName = loginCheck.check(ID, PW)
+            del loginCheck
             i += 1
 
             if i == 10:
@@ -85,6 +65,32 @@ class TestLoginCommit(APIView):
             return Response({'username':userName, 'overlap':1})
         except User.DoesNotExist:
             return Response({'username':userName, 'overlap':0})
+
+
+class TestLoginCommit(APIView):
+    def get(self, request, my_parameter, my_parameters, format=None):
+        ID = my_parameter
+        PW = my_parameters
+
+        loginCheck = EclassCheck()
+        userName = loginCheck.check(ID, PW)
+        del loginCheck
+        i = 0
+
+        while userName == False:
+            loginCheck = EclassCheck()
+            userName = loginCheck.check(ID, PW)
+            del loginCheck
+            i += 1
+
+            if i == 10:
+                return Response('error')
+        try:
+            User.objects.get(username=ID)
+
+            return Response({'username': userName, 'overlap': 1})
+        except User.DoesNotExist:
+            return Response({'username': userName, 'overlap': 0})
 
 
 class TestCheck(APIView):

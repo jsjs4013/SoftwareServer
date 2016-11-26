@@ -31,8 +31,6 @@ class EclassCheck:
             return False
         except socket.timeout:
             return False
-        finally:
-            return True
 
         #### LOGIN CHECK ####
         main_url = 'https://eclass.dongguk.edu/Main.do?cmd=viewEclassMain&mainMenuId=menu_00050&subMenuId=&menuType=menu'
