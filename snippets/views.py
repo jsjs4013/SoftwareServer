@@ -149,10 +149,11 @@ class BookDetail(APIView):
         return permission.permissionGet(UsedBookSerializer, snippet, self.request.user)
 
     def put(self, request, pk, format=None):
+        received_json_data = json.loads(request.body.decode("utf-8"))
         snippet = self.get_object(pk)
         permission = checkUser()
 
-        return permission.permissionPut(UsedBookSerializer, snippet, request.data, self.request.user)
+        return permission.permissionPut(UsedBookSerializer, snippet, received_json_data, self.request.user)
 
     def delete(self, request, pk, format=None):
         snippet = self.get_object(pk)
@@ -344,7 +345,7 @@ class BuyCheckBook(APIView):
         bookId = received_json_data['bookId']
         # bookId = request.POST['bookId']
         user = self.request.user
-        serializer = RequestSerializer(data=request.data)
+        serializer = RequestSerializer(data=received_json_data)
         if serializer.is_valid():
             try:
                 UsedBook.objects.get(pk=bookId)
