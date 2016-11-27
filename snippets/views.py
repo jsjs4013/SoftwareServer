@@ -118,7 +118,7 @@ class BookList(APIView):
         return Response(serializer.data)
 
     def post(self, request, format=None):
-        received_json_data = json.loads(request.body.decode("euc-kr"))
+        received_json_data = json.loads(request.body.decode("utf-8"))
         serializer = UsedBookSerializer(data=received_json_data)
         if serializer.is_valid():
             serializer.save(owner=self.request.user)
