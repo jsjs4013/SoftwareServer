@@ -290,9 +290,9 @@ class SearchBook(APIView):
         return Response(serializer.data)
 
     def post(self, request, format=None):
-        # received_json_data = json.loads(request.body.decode("utf-8"))
-        # bookName = received_json_data['bookName']
-        bookName = request.POST['bookName']
+        received_json_data = json.loads(request.body.decode("utf-8"))
+        bookName = received_json_data['bookName']
+        # bookName = request.POST['bookName']
         search = UsedBook.objects.filter(bookTitle__icontains=bookName)
         serializer = UsedBookSerializer(search, many=True)
 
@@ -339,9 +339,9 @@ class BuyCheckBook(APIView):
         return Response(serializer.data)
 
     def post(self, request, format=None):
-        # received_json_data = json.loads(request.body.decode("utf-8"))
-        # bookId = received_json_data['bookId']
-        bookId = request.POST['bookId']
+        received_json_data = json.loads(request.body.decode("utf-8"))
+        bookId = received_json_data['bookId']
+        # bookId = request.POST['bookId']
         user = self.request.user
         serializer = RequestSerializer(data=request.data)
         if serializer.is_valid():
