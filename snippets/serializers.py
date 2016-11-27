@@ -75,4 +75,4 @@ class RequestSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Request
-        fields = ('id', 'bookId', 'owner')
+        fields = ('id', 'bookId', 'owner', 'ownerName')

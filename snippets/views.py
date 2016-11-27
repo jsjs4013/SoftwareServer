@@ -233,6 +233,48 @@ class MyRequestList(APIView):
         raise Http404
 
 
+# class MyRegister2RequestList(APIView):
+#     """
+#     코드 조각 조회, 업데이트, 삭제
+#     """
+#
+#     authentication_classes = (authentication.JSONWebTokenAuthentication,)
+#     permission_classes = (permissions.IsAuthenticated,)
+#
+#     def get_object(self, pk):
+#         try:
+#             return User.objects.get(pk=pk)
+#         except User.DoesNotExist:
+#             raise Http404
+#
+#     def get(self, request, pk, format=None):
+#         snippet = self.get_object(pk)
+#         user = self.request.user
+#         bookList = []
+#         requestList = []
+#
+#         if snippet.username == str(user):
+#             snippet = user.requestbuyers.all()
+#             for snippetFilter in snippet:
+#                 bookList.append((snippetFilter.pk, snippetFilter.bookId))
+#             for snippetFilter in bookList:
+#                 try:
+#                     book = UsedBook.objects.get(pk=snippetFilter[1])
+#
+#
+#                     requestList.append({'author' : book.author, 'bookTitle' : book.bookTitle,
+#                                         'cource' : book.cource, 'id' : book.pk,
+#                                         'isbn' : book.isbn, 'owner' : str(book.owner),
+#                                         'professor' : book.professor, 'publisher' : book.publisher,
+#                                         'requestId' : snippetFilter[0]})
+#                 except UsedBook.DoesNotExist:
+#                     raise Http404
+#
+#             return Response(requestList)
+#
+#         raise Http404
+
+
 class SearchBook(APIView):
     """
     코드 조각 조회, 업데이트, 삭제
@@ -248,6 +290,8 @@ class SearchBook(APIView):
         return Response(serializer.data)
 
     def post(self, request, format=None):
+        # received_json_data = json.loads(request.body.decode("utf-8"))
+        # bookName = received_json_data['bookName']
         bookName = request.POST['bookName']
         search = UsedBook.objects.filter(bookTitle__icontains=bookName)
         serializer = UsedBookSerializer(search, many=True)
@@ -295,8 +339,10 @@ class BuyCheckBook(APIView):
         return Response(serializer.data)
 
     def post(self, request, format=None):
-        user = self.request.user
+        # received_json_data = json.loads(request.body.decode("utf-8"))
+        # bookId = received_json_data['bookId']
         bookId = request.POST['bookId']
+        user = self.request.user
         serializer = RequestSerializer(data=request.data)
         if serializer.is_valid():
             try:

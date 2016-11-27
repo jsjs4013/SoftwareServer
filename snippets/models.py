@@ -41,6 +41,7 @@ class UsedBook(models.Model):
 
 class Request(models.Model):
     owner = models.ForeignKey(User, related_name='requestbuyers')
+    ownerName = models.CharField(max_length=100, blank=True, default='')
     bookId = models.CharField(max_length=100, blank=True, default='')
 
     created = models.DateTimeField(auto_now_add=True)
