@@ -77,14 +77,16 @@ class TestLoginCommit(APIView):
         del loginCheck
         i = 0
 
-        while userName == False:
-            loginCheck = EclassCheck()
-            userName = loginCheck.check(ID, PW)
-            del loginCheck
-            i += 1
-
-            if i == 5:
-                return Response('error')
+        # while userName == False:
+        #     loginCheck = EclassCheck()
+        #     userName = loginCheck.check(ID, PW)
+        #     del loginCheck
+        #     i += 1
+        #
+        #     if i == 5:
+        #         return Response('error')
+        if userName == False:
+            return Response('error')
         try:
             User.objects.get(username=ID)
 
