@@ -3,3 +3,4 @@ djangorestframework
 pygments
 beautifulsoup4
 djangorestframework-jwt
+requests
