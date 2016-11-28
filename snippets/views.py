@@ -15,7 +15,7 @@ from snippets.permissions import IsOwnerOrReadOnly, checkUser
 from rest_framework_jwt import authentication
 from rest_framework.generics import CreateAPIView, UpdateAPIView
 
-from snippets.firebase import Firebase
+# from snippets.firebase import Firebase
 
 import json
 
@@ -69,7 +69,7 @@ class TestLoginCommit(APIView):
         ID = my_parameter
         PW = my_parameters
 
-        Firebase
+        # Firebase
 
         loginCheck = EclassCheck()
         userName = loginCheck.check(ID, PW)
