@@ -15,8 +15,7 @@ from snippets.permissions import IsOwnerOrReadOnly, checkUser
 from rest_framework_jwt import authentication
 from rest_framework.generics import CreateAPIView, UpdateAPIView
 
-# from snippets.firebase import Firebase
-
+import requests
 import json
 
 
@@ -67,7 +66,23 @@ class TestLoginCommit(APIView):
         ID = my_parameter
         PW = my_parameters
 
-        # Firebase
+        myUrl = 'https://fcm.googleapis.com/fcm/send'
+        payload = {
+            "to" : "cSLVln1RUjU:APA91bGKrJ7bBI2azd2Q3ZJ-iR-xQ4_tCb2enEhWzUOAjVCs2FGfYSp8xeEui1-4Y0d-qrVLyoCbED6kwxzqIqT0p0DxP_EqOSMRVoFGznAntSqK1amDed4f_9OQdzSSyaxHQsUbr6KN",
+            "notification" : {
+                "title" : "카톡이 왔어요",
+                "text" : "그게 말이야 카톡이야 후후"
+            }
+        }
+
+        headers = {
+            'UserAgent' : "FCM-Server",
+            'Content-Type' : 'application/json',
+            'Authorization' : "key=AAAAV-kOpiQ:APA91bF0nM7MJ70kCrFCaLEzncirYFigDT7_TGGZObSvecw9xJ4KBbpTVJwxUICV6ZDfv2XzIeI2H7-XBO1po8j8G-cLov5_xWAF0XF3t6xiLWuUGjQGynM3zluFsRNKIy4dpqCQCh600i04xvjXLu8TWhMLeNB5ZA"
+        }
+
+        res = requests.post(myUrl, json.dumps(payload), headers=headers)
+        return Response(res.content)
 
         loginCheck = EclassCheck()
         userName = loginCheck.check(ID, PW)
