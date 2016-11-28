@@ -17,7 +17,7 @@ class EclassCheck:
         #### LOGIN CHECK ####
         main_url = 'http://lib.dongguk.edu/studyroom/mainFullView?type=pc'
         r = session.get(main_url, timeout=5)
-        data = r.content.decode('utf-8')
+        data = r.content.decode('euc-kr')
         soup = BeautifulSoup(data, "html.parser")
 
         try :  # 로그인 실패시 예외처리
