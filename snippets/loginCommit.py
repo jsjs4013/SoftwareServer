@@ -16,7 +16,7 @@ class EclassCheck:
 
         #### LOGIN CHECK ####
         main_url = 'https://eclass.dongguk.edu/Main.do?cmd=viewEclassMain&mainMenuId=menu_00050&subMenuId=&menuType=menu'
-        r = session.get(main_url)
+        r = session.get(main_url, timeout=5)
         data = r.content.decode('utf-8')
         soup = BeautifulSoup(data, "html.parser")
 
