@@ -5,8 +5,8 @@ class EclassCheck:
     def check(self, ID, PW):
         #### LOGIN INFO ####
         login_info={
-                'userDTO.userId':ID, # YourID 2014112025
-                'userDTO.password':PW # YourPW wlsduddl14!
+                'id':ID, # YourID 2014112025
+                'password':PW # YourPW wlsduddl14!
         }
 
         # 실제 로그인 하는 부분. Dict 형태로 로그인 정보를 담아 request 보냄. Request 생성 시 두번째 인자가 들어오게 되면 자동으로 Post Request로 인식
@@ -16,7 +16,7 @@ class EclassCheck:
 
         #### LOGIN CHECK ####
         main_url = 'http://lib.dongguk.edu/studyroom/mainFullView?type=pc'
-        r = session.get(main_url, timeout=5)
+        r = session.get(main_url)
         data = r.content.decode('euc-kr')
         soup = BeautifulSoup(data, "html.parser")
 
