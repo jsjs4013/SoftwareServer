@@ -224,7 +224,7 @@ class MyRequestList(APIView):
 
                     requestList.append({'author' : book.author, 'bookTitle' : book.bookTitle,
                                         'cource' : book.cource, 'id' : book.pk,
-                                        'isbn' : book.isbn, 'owner' : str(book.owner),
+                                        'isbn' : book.isbn, 'owner' : book.owner.username,
                                         'professor' : book.professor, 'publisher' : book.publisher,
                                         'requestId' : snippetFilter[0]})
                 except UsedBook.DoesNotExist:
