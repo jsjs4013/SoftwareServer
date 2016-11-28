@@ -86,7 +86,7 @@ class TestLoginCommit(APIView):
         #     if i == 10:
         #         return Response('error')
         if userName == False:
-            return Response('error')
+            return Response(userName)
         try:
             User.objects.get(username=ID)
 
