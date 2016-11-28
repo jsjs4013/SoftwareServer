@@ -309,11 +309,11 @@ class BuyCheckBook(APIView):
         return Response(serializer.data)
 
     def post(self, request, format=None):
-        # received_json_data = json.loads(request.body.decode("utf-8"))
-        # bookId = received_json_data['bookId']
-        bookId = request.POST['bookId']
+        received_json_data = json.loads(request.body.decode("utf-8"))
+        bookId = received_json_data['bookId']
+        # bookId = request.POST['bookId']
         user = self.request.user
-        serializer = RequestSerializer(data=request.data)
+        serializer = RequestSerializer(data=received_json_data)
         if serializer.is_valid():
             try:
                 UsedBook.objects.get(pk=bookId)
