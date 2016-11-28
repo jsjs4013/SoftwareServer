@@ -2,6 +2,7 @@ import urllib
 import http.cookiejar
 import ssl
 from bs4 import BeautifulSoup
+import contextlib
 import socket
 
 class EclassCheck:
@@ -15,15 +16,17 @@ class EclassCheck:
         #### LOGIN OPERATION ####
         # 로그인 정보를 가지고 사이트를 돌아다녀야 하므로 opener에 쿠키 저장소를 설정해두고 로그인을 시도해야함
         cj = http.cookiejar.LWPCookieJar() # CookieJar() : 쿠키를 저장하는 곳
-        # https_sslv23_handler = urllib.request.HTTPSHandler(context=ssl.SSLContext(ssl.PROTOCOL_SSLv23)) # python의 ssl protocol_SSLv23을 적용하기 위한 handler
-        opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(cj)) # SSL과 Cookie를 사용하는 opener 생성. HTTPCookieProcessor : build_opener의 쿠키 저장소를 설정
+        https_sslv23_handler = urllib.request.HTTPSHandler(context=ssl.SSLContext(ssl.PROTOCOL_SSLv23)) # python의 ssl protocol_SSLv23을 적용하기 위한 handler
+        opener = urllib.request.build_opener(https_sslv23_handler,urllib.request.HTTPCookieProcessor(cj)) # SSL과 Cookie를 사용하는 opener 생성. HTTPCookieProcessor : build_opener의 쿠키 저장소를 설정
         urllib.request.install_opener(opener) # install_opener : 위에서 설정한 opener 설정을 전역적으로 사용
 
         # 실제 로그인 하는 부분. Dict 형태로 로그인 정보를 담아 request 보냄. Request 생성 시 두번째 인자가 들어오게 되면 자동으로 Post Request로 인식
         login_url='https://eclass.dongguk.edu/User.do?cmd=loginUser' # 로그인 검증 페이지
         params=urllib.parse.urlencode(login_info) # login_info를 바탕으로 Request 할 수 있게 변환
         req=urllib.request.Request(login_url,params.encode('utf-8')) # Request 생성. Request의 인자를 string 형식으로 직접보낼 수 없음. 'utf-8'로 인코딩 해야 함.
-        opener.open(req)
+        # opener.open(req)
+        with contextlib.closing(urllib.request.urlopen(req)) as X:
+            pass
 
         # try:
         #     with urllib.request.urlopen(req) as response:  # Request 전송
