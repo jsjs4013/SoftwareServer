@@ -174,17 +174,17 @@ class MyBookList(APIView):
     authentication_classes = (authentication.JSONWebTokenAuthentication,)
     permission_classes = (permissions.IsAuthenticated,)
 
-    def get_object(self, pk):
+    def get_object(self, username):
         try:
-            return User.objects.get(pk=pk)
+            return User.objects.get(username=username)
         except User.DoesNotExist:
             raise Http404
 
-    def get(self, request, pk, format=None):
-        snippet = self.get_object(pk)
+    def get(self, request, username, format=None):
+        snippet = self.get_object(username)
         user = self.request.user
 
-        if snippet.username == str(user):
+        if snippet.username == user.username:
             snippet = user.books.all()
             serializer = UsedBookSerializer(snippet, many=True)
 
@@ -201,14 +201,14 @@ class MyRequestList(APIView):
     authentication_classes = (authentication.JSONWebTokenAuthentication,)
     permission_classes = (permissions.IsAuthenticated,)
 
-    def get_object(self, pk):
+    def get_object(self, username):
         try:
-            return User.objects.get(pk=pk)
+            return User.objects.get(username=username)
         except User.DoesNotExist:
             raise Http404
 
-    def get(self, request, pk, format=None):
-        snippet = self.get_object(pk)
+    def get(self, request, username, format=None):
+        snippet = self.get_object(username)
         user = self.request.user
         bookList = []
         requestList = []
@@ -267,14 +267,14 @@ class MyBuyBook(APIView):
     authentication_classes = (authentication.JSONWebTokenAuthentication,)
     permission_classes = (permissions.IsAuthenticated,)
 
-    def get_object(self, pk):
+    def get_object(self, username):
         try:
-            return User.objects.get(pk=pk)
+            return User.objects.get(username=username)
         except User.DoesNotExist:
             raise Http404
 
-    def get(self, request, pk, bookId, format=None):
-        snippet = self.get_object(pk)
+    def get(self, request, username, bookId, format=None):
+        snippet = self.get_object(username)
         user = self.request.user
 
         if snippet.username == str(user):
