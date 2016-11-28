@@ -13,6 +13,7 @@ class EclassCheck:
         login_url='https://eclass.dongguk.edu/User.do?cmd=loginUser' # 로그인 검증 페이지
         session = requests.session()
         r = session.post(login_url, data=login_info)
+        return '문주원'
 
         #### LOGIN CHECK ####
         main_url = 'https://eclass.dongguk.edu/Main.do?cmd=viewEclassMain&mainMenuId=menu_00050&subMenuId=&menuType=menu'
