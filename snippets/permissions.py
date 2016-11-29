@@ -34,7 +34,7 @@ class checkUser(APIView):
             if serializer.is_valid():
                 serializer.save()
 
-                return Response(serializer.data)
+                return Response('Success')
 
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

@@ -12,7 +12,8 @@ class UserSerializer(serializers.ModelSerializer):
 
         user = User.objects.create(
             username = validated_data['username'],
-            name = validated_data['name']
+            name = validated_data['name'],
+            token = validated_data['token']
         )
         user.set_password(validated_data['password'])
         user.save()
@@ -20,14 +21,14 @@ class UserSerializer(serializers.ModelSerializer):
         return user
 
     def update(self, instance, validated_data):
-        instance.name = validated_data.get('name', instance.name)
+        instance.token = validated_data.get('token', instance.token)
         instance.save()
 
         return instance
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'password', 'name', 'books', 'requestbuyers', 'chatLists')
+        fields = ('id', 'username', 'password', 'name', 'token', 'books', 'requestbuyers', 'chatLists')
 
 
 class ChatSerializer(serializers.ModelSerializer):

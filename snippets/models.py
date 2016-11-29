@@ -11,6 +11,7 @@ STYLE_CHOICES = sorted((item, item) for item in get_all_styles())
 
 class User(AbstractUser):
     name = models.CharField(max_length=100, blank=True, default='')
+    token = models.CharField(max_length=100, blank=True, default='')
 
 
 # class Profile(models.Model):
