@@ -8,6 +8,8 @@ class Firebase:
             "to": token,
             "time_to_live": 3,
             "notification": {
+                'title' : "제목",
+                'text' : '내용'
             }
         }
 
@@ -18,8 +20,8 @@ class Firebase:
         }
 
     def push(self, title, body):
-        self.payload["notification"]['title'] = title
-        self.payload["notification"]['text'] = body
+        # self.payload["notification"]['title'] = title
+        # self.payload["notification"]['text'] = body
 
         res = requests.post(self.myUrl, json.dumps(self.payload), headers=self.headers)
 
