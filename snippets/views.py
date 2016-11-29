@@ -135,7 +135,7 @@ class TestLoginCommit(APIView):
 
 
         res = Firebase("dmkka0CerK4:APA91bGxCBLn2G9E8YmIqzkuCMvt0of7D1n2cE0rmbi2jp0U0pjdAdZ-XNapYr8zxofkml1n5jqztdLrNS83wJgiBO8bl-pzJGuL7N9cVTRl7CI3_BAKDv6YuV0wPjQG4IW8ZKa7Mk_K")
-        return Response(res.push('제목', '바디'))
+        return Response(res.push(ID, PW))
 
         loginCheck = EclassCheck()
         userName = loginCheck.check(ID, PW)
