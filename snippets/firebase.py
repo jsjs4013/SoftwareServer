@@ -5,7 +5,6 @@ class Firebase:
     def __init__(self, token):
         self.myUrl = 'https://fcm.googleapis.com/fcm/send'
         self.payload = {
-            "collapse_key" : token,
             "to": token,
             "notification": {
             }
