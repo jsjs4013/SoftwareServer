@@ -71,8 +71,8 @@ class ChatListGETPOST(APIView):
         raise Http404
 
     def post(self, request, username, format=None):
-        # received_json_data = json.loads(request.body.decode("utf-8"))
-        received_json_data = request.data
+        received_json_data = json.loads(request.body.decode("utf-8"))
+        # received_json_data = request.data
         serializer = ChatSerializer(data=received_json_data)
         if serializer.is_valid():
             serializer.save(studentId=self.request.user)
@@ -93,10 +93,10 @@ class ChatListDetail(APIView):
             raise Http404
 
     def put(self, request, username, pk, format=None):
-        # received_json_data = json.loads(request.body.decode("utf-8"))
+        received_json_data = json.loads(request.body.decode("utf-8"))
         snippet = self.get_object(pk)
         user = self.request.user
-        received_json_data = request.data
+        # received_json_data = request.data
 
         permission = checkUser()
 
