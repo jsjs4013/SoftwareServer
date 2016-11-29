@@ -19,8 +19,8 @@ class Firebase:
         }
 
     def push(self, title, body):
-        self.payload["notification"]['title'] = title
-        self.payload["notification"]['text'] = body
+        self.payload["notification"]['title'] = '다람'
+        self.payload["notification"]['text'] = '다다람?'
 
         res = requests.post(self.myUrl, json.dumps(self.payload), headers=self.headers)
 
