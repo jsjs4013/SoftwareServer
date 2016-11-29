@@ -378,10 +378,9 @@ class BuyCheckBook(APIView):
         return Response(serializer.data)
 
     def post(self, request, format=None):
-        # received_json_data = json.loads(request.body.decode("utf-8"))
-        # bookId = received_json_data['bookId']
-        received_json_data = request.data
-        bookId = request.POST['bookId']
+        received_json_data = json.loads(request.body.decode("utf-8"))
+        bookId = received_json_data['bookId']
+        # bookId = request.POST['bookId']
         user = self.request.user
         serializer = RequestSerializer(data=received_json_data)
         if serializer.is_valid():
@@ -402,7 +401,7 @@ class BuyCheckBook(APIView):
 
             serializer = self.get_bookInfo(bookId)
             book = serializer
-            serializer = self.get_UserInfo(str(serializer.owner))
+            serializer = self.get_UserInfo(serializer.owner)
 
             # return Response(serializer.token)
 
