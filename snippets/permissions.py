@@ -40,6 +40,18 @@ class checkUser(APIView):
 
         raise Http404
 
+    def permissionChatPut(self, Serializer, snippet, data, user):
+        if snippet.studentId == user:
+            serializer = Serializer(snippet, data=data)
+            if serializer.is_valid():
+                serializer.save()
+
+                return Response(serializer.data)
+
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        raise Http404
+
     def permissionDel(self, snippet, user):
         if snippet.owner == user:
             snippet.delete()

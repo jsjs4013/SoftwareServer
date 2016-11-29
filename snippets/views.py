@@ -44,19 +44,63 @@ class UserChange(UpdateAPIView):
     serializer_class = UserSerializer
 
 
-class ChatCreate(CreateAPIView):
-    model = ChatList
+class ChatListGETPOST(APIView):
+    """
+    코드 조각 조회, 업데이트, 삭제
+    """
+
     authentication_classes = (authentication.JSONWebTokenAuthentication,)
     permission_classes = (permissions.IsAuthenticated,)
-    serializer_class = ChatSerializer
+
+    def get_object(self, username):
+        try:
+            return User.objects.get(username=username)
+        except User.DoesNotExist:
+            raise Http404
+
+    def get(self, request, username, format=None):
+        snippet = self.get_object(username)
+        user = self.request.user
+
+        if snippet.username == user.username:
+            snippet = snippet.chatLists.all()
+            serializer = ChatSerializer(snippet, many=True)
+
+            return Response(serializer.data)
+
+        raise Http404
+
+    def post(self, request, username, format=None):
+        # received_json_data = json.loads(request.body.decode("utf-8"))
+        received_json_data = request.data
+        serializer = ChatSerializer(data=received_json_data)
+        if serializer.is_valid():
+            serializer.save(studentId=self.request.user)
+
+            return Response('Success', status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class ChatPush(UpdateAPIView):
-    model = ChatList
-    queryset = ChatList.objects.all()
+class ChatListDetail(APIView):
     authentication_classes = (authentication.JSONWebTokenAuthentication,)
     permission_classes = (permissions.IsAuthenticated,)
-    serializer_class = ChatSerializer
+
+    def get_object(self, pk):
+        try:
+            return ChatList.objects.get(pk=pk)
+        except User.DoesNotExist:
+            raise Http404
+
+    def put(self, request, username, pk, format=None):
+        # received_json_data = json.loads(request.body.decode("utf-8"))
+        snippet = self.get_object(pk)
+        user = self.request.user
+        received_json_data = request.data
+
+        permission = checkUser()
+
+        return permission.permissionChatPut(ChatSerializer, snippet, received_json_data, self.request.user)
 
 
 class LoginCommit(APIView):
@@ -90,7 +134,7 @@ class TestLoginCommit(APIView):
         PW = my_parameters
 
 
-        res = Firebase("cSLVln1RUjU:APA91bGKrJ7bBI2azd2Q3ZJ-iR-xQ4_tCb2enEhWzUOAjVCs2FGfYSp8xeEui1-4Y0d-qrVLyoCbED6kwxzqIqT0p0DxP_EqOSMRVoFGznAntSqK1amDed4f_9OQdzSSyaxHQsUbr6KN")
+        res = Firebase("dmkka0CerK4:APA91bGxCBLn2G9E8YmIqzkuCMvt0of7D1n2cE0rmbi2jp0U0pjdAdZ-XNapYr8zxofkml1n5jqztdLrNS83wJgiBO8bl-pzJGuL7N9cVTRl7CI3_BAKDv6YuV0wPjQG4IW8ZKa7Mk_K")
         return Response(res.push('제목', '바디'))
 
         loginCheck = EclassCheck()
@@ -232,7 +276,7 @@ class MyRequestList(APIView):
         bookList = []
         requestList = []
 
-        if snippet.username == str(user):
+        if snippet.username == user.username:
             snippet = user.requestbuyers.all()
             for snippetFilter in snippet:
                 bookList.append((snippetFilter.pk, snippetFilter.bookId))
@@ -299,7 +343,7 @@ class MyBuyBook(APIView):
         snippet = self.get_object(username)
         user = self.request.user
 
-        if snippet.username == str(user):
+        if snippet.username == user.username:
             snippet = Request.objects.filter(bookId=bookId)
             serializer = RequestSerializer(snippet, many=True)
 

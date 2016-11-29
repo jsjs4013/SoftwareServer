@@ -6,7 +6,10 @@ class Firebase:
         self.myUrl = 'https://fcm.googleapis.com/fcm/send'
         self.payload = {
             "to": token,
-            "notification": {}
+            "notification": {
+                'title' : 'hihi',
+                'text' : 'body'
+            }
         }
 
         self.headers = {

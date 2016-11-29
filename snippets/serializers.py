@@ -33,23 +33,9 @@ class UserSerializer(serializers.ModelSerializer):
 class ChatSerializer(serializers.ModelSerializer):
     studentId = serializers.ReadOnlyField(source='studentId.username')
 
-    def create(self, validated_data):
-        chat = ChatList.objects.create(
-            username=validated_data['username'],
-            name=validated_data['name']
-        )
-
-        return chat
-
-    def update(self, instance, validated_data):
-        instance.name = validated_data.get('name', instance.name)
-        instance.save()
-
-        return instance
-
     class Meta:
         model = ChatList
-        fields = ('studentId', 'partner')
+        fields = ('id', 'studentId', 'partner', 'lastMessage')
 
 
 # class ProfileSerializer(serializers.ModelSerializer):

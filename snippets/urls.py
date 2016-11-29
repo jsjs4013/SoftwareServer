@@ -25,6 +25,8 @@ urlpatterns = [
     url(r'^users/(?P<username>[0-9]+)/my/register/book/$', views.MyBookList.as_view()),
     url(r'^users/(?P<username>[0-9]+)/my/request/book/$', views.MyRequestList.as_view()),
     url(r'^users/(?P<username>[0-9]+)/my/buy/book/(?P<bookId>[0-9]+)/$', views.MyBuyBook.as_view()),
+    url(r'^users/(?P<username>[0-9]+)/my/chat/list/$', views.ChatListGETPOST.as_view()),
+    url(r'^users/(?P<pk>[0-9]+)/my/chat/list/update/$', views.ChatListDetail.as_view()),
 
     url(r'^test/$', views.TestCheck.as_view()),
 
