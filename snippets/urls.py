@@ -7,6 +7,7 @@ from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token, verify
 urlpatterns = [
     url(r'^loginCheck/$', views.LoginCommit.as_view()),
     url(r'^signup/$', views.UserManage.as_view()),
+    url(r'^receive/token/$', views.UserChange.as_view()),
 
     url(r'^loginCheck/(?P<my_parameter>.+)/(?P<my_parameters>.+)/$', views.TestLoginCommit.as_view()),
 

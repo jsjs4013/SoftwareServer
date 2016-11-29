@@ -358,6 +358,19 @@ class BuyCheckBook(APIView):
     """
     authentication_classes = (authentication.JSONWebTokenAuthentication,)
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+
+    def get_bookInfo(self, pk):
+        try:
+            return UsedBook.objects.get(pk=pk)
+        except UsedBook.DoesNotExist:
+            raise Http404
+
+    def get_UserInfo(self, username):
+        try:
+            return User.objects.get(pk=username)
+        except User.DoesNotExist:
+            raise Http404
+
     def get(self, request, format=None):
         books = Request.objects.all()
         serializer = RequestSerializer(books, many=True)
@@ -385,6 +398,13 @@ class BuyCheckBook(APIView):
                 raise Http404
 
             serializer.save(owner=self.request.user)
+
+            serializer = self.get_bookInfo(bookId)
+            serializer = self.get_UserInfo(serializer.owner)
+
+            return Response(serializer.token)
+
+            pushMessage = Firebase()
 
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
