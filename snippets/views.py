@@ -431,4 +431,4 @@ class BookCheckDetail(APIView):
         snippet = self.get_object(pk)
         permission = checkUser()
 
-        return permission.permissionDel(snippet, self.request.user)
+        return permission.permissionDel(snippet, self.request.user.username)
