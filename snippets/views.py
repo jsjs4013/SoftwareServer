@@ -402,9 +402,10 @@ class BuyCheckBook(APIView):
             serializer = self.get_bookInfo(bookId)
             serializer = self.get_UserInfo(serializer.owner)
 
-            return Response(serializer.token)
+            # return Response(serializer.token)
 
-            pushMessage = Firebase()
+            pushMessage = Firebase(serializer.token)
+            pushMessage.push('제목', '바디')
 
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
