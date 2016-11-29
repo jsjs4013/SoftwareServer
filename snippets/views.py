@@ -236,6 +236,9 @@ class MyRequestList(APIView):
                                         'cource' : book.cource, 'id' : book.pk,
                                         'isbn' : book.isbn, 'owner' : book.owner.username,
                                         'professor' : book.professor, 'publisher' : book.publisher,
+                                        'comment' : book.comment, 'status' : book.status,
+                                        'price' : book.price, 'sellerPrice' : book.sellerPrice,
+                                        'pubdate' : book.pubdate, 'image' : book.image,
                                         'requestId' : snippetFilter[0]})
                 except UsedBook.DoesNotExist:
                     raise Http404
