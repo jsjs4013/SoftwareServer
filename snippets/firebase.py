@@ -23,5 +23,3 @@ class Firebase:
 
         res = requests.post(self.myUrl, json.dumps(self.payload), headers=self.headers)
         res.close()
-
-        return res.content
