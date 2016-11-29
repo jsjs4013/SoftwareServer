@@ -18,6 +18,12 @@ class UserSerializer(serializers.ModelSerializer):
 
         return user
 
+    # def update(self, instance, validated_data):
+    #     instance.token = validated_data.get('token', instance.token)
+    #     instance.save()
+    #
+    #     return instance
+
     class Meta:
         model = User
         fields = ('id', 'username', 'password', 'name', 'books', 'requestbuyers')
