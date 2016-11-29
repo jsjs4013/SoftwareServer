@@ -36,9 +36,9 @@ class UserManage(CreateAPIView):
 
 
 class UserChange(UpdateAPIView):
-
     model = User
     queryset = User.objects.all()
+    lookup_field = 'username'
     authentication_classes = (authentication.JSONWebTokenAuthentication,)
     permission_classes = (permissions.IsAuthenticated,)
     serializer_class = UserSerializer
