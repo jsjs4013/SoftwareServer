@@ -367,7 +367,7 @@ class BuyCheckBook(APIView):
 
     def get_UserInfo(self, username):
         try:
-            return User.objects.get(pk=username)
+            return User.objects.get(username=username)
         except User.DoesNotExist:
             raise Http404
 
