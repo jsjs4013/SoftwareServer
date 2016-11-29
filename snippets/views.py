@@ -408,9 +408,9 @@ class BuyCheckBook(APIView):
             pushMessage = Firebase(serializer.token)
             pushMessage.push('구매요청', user.username, book.bookTitle)
 
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response('Success')
 
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response('error')
 
 
 class BookCheckDetail(APIView):
