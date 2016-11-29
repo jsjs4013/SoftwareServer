@@ -378,9 +378,10 @@ class BuyCheckBook(APIView):
         return Response(serializer.data)
 
     def post(self, request, format=None):
-        received_json_data = json.loads(request.body.decode("utf-8"))
-        bookId = received_json_data['bookId']
-        # bookId = request.POST['bookId']
+        # received_json_data = json.loads(request.body.decode("utf-8"))
+        # bookId = received_json_data['bookId']
+        received_json_data = request.data
+        bookId = request.POST['bookId']
         user = self.request.user
         serializer = RequestSerializer(data=received_json_data)
         if serializer.is_valid():
@@ -399,16 +400,15 @@ class BuyCheckBook(APIView):
 
             serializer.save(owner=self.request.user)
 
-            serializer = self.get_bookInfo(bookId)
-            book = serializer
-            serializer = self.get_UserInfo(serializer.owner)
+            bookInfo = self.get_bookInfo(bookId)
+            userInfo = self.get_UserInfo(bookInfo.owner)
 
-            pushMessage = Firebase(serializer.token)
-            pushMessage.push('구매요청', user.username, book.bookTitle)
+            pushMessage = Firebase(userInfo.token)
+            pushMessage.push('구매요청', user.username, bookInfo.bookTitle)
 
-            return Response('Success')
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-        return Response('error')
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class BookCheckDetail(APIView):
