@@ -1,5 +1,5 @@
-from snippets.models import User, UsedBook, Request
-from snippets.serializers import UserSerializer, UsedBookSerializer, RequestSerializer
+from snippets.models import User, UsedBook, Request, ChatList
+from snippets.serializers import UserSerializer, UsedBookSerializer, RequestSerializer, ChatSerializer
 from django.http import Http404
 from django.db.models import query
 from rest_framework.views import APIView
@@ -30,10 +30,33 @@ class UserDetail(generics.RetrieveAPIView):
 
 
 class UserManage(CreateAPIView):
-
     model = User
     permission_classes = (permissions.AllowAny,)
     serializer_class = UserSerializer
+
+
+class UserChange(UpdateAPIView):
+
+    model = User
+    queryset = User.objects.all()
+    authentication_classes = (authentication.JSONWebTokenAuthentication,)
+    permission_classes = (permissions.IsAuthenticated,)
+    serializer_class = UserSerializer
+
+
+class ChatCreate(CreateAPIView):
+    model = ChatList
+    authentication_classes = (authentication.JSONWebTokenAuthentication,)
+    permission_classes = (permissions.IsAuthenticated,)
+    serializer_class = ChatSerializer
+
+
+class ChatPush(UpdateAPIView):
+    model = ChatList
+    queryset = ChatList.objects.all()
+    authentication_classes = (authentication.JSONWebTokenAuthentication,)
+    permission_classes = (permissions.IsAuthenticated,)
+    serializer_class = ChatSerializer
 
 
 class LoginCommit(APIView):

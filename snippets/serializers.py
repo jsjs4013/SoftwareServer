@@ -1,10 +1,11 @@
 from rest_framework import serializers
-from snippets.models import LANGUAGE_CHOICES, STYLE_CHOICES, User, UsedBook, Request
+from snippets.models import LANGUAGE_CHOICES, STYLE_CHOICES, User, UsedBook, Request, ChatList
 
 
 class UserSerializer(serializers.ModelSerializer):
     books = serializers.PrimaryKeyRelatedField(many=True, queryset=UsedBook.objects.all(), required=False)
     requestbuyers = serializers.PrimaryKeyRelatedField(many=True, queryset=Request.objects.all(), required=False)
+    chatLists = serializers.PrimaryKeyRelatedField(many=True, queryset=ChatList.objects.all(), required=False)
     password = serializers.CharField(write_only=True)
 
     def create(self, validated_data):
@@ -18,15 +19,37 @@ class UserSerializer(serializers.ModelSerializer):
 
         return user
 
-    # def update(self, instance, validated_data):
-    #     instance.token = validated_data.get('token', instance.token)
-    #     instance.save()
-    #
-    #     return instance
+    def update(self, instance, validated_data):
+        instance.name = validated_data.get('name', instance.name)
+        instance.save()
+
+        return instance
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'password', 'name', 'books', 'requestbuyers')
+        fields = ('id', 'username', 'password', 'name', 'books', 'requestbuyers', 'chatLists')
+
+
+class ChatSerializer(serializers.ModelSerializer):
+    studentId = serializers.ReadOnlyField(source='studentId.username')
+
+    def create(self, validated_data):
+        chat = ChatList.objects.create(
+            username=validated_data['username'],
+            name=validated_data['name']
+        )
+
+        return chat
+
+    def update(self, instance, validated_data):
+        instance.name = validated_data.get('name', instance.name)
+        instance.save()
+
+        return instance
+
+    class Meta:
+        model = ChatList
+        fields = ('studentId', 'partner')
 
 
 # class ProfileSerializer(serializers.ModelSerializer):

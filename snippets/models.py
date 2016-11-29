@@ -39,6 +39,11 @@ class UsedBook(models.Model):
         ordering = ('created',)
 
 
+class ChatList(models.Model):
+    studentId = models.ForeignKey(User, related_name='chatLists', primary_key=True)
+    partner = models.CharField(max_length=100, blank=True, default='')
+
+
 class Request(models.Model):
     owner = models.ForeignKey(User, related_name='requestbuyers')
     ownerName = models.CharField(max_length=100, blank=True, default='')
