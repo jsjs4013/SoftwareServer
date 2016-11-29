@@ -36,7 +36,7 @@ class ChatSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ChatList
-        fields = ('id', 'studentId', 'partner', 'lastMessage')
+        fields = ('id', 'studentId', 'partner', 'partnerName', 'lastMessage')
 
 
 # class ProfileSerializer(serializers.ModelSerializer):
