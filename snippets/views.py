@@ -134,8 +134,8 @@ class TestLoginCommit(APIView):
         PW = my_parameters
 
 
-        res = Firebase("dmkka0CerK4:APA91bGxCBLn2G9E8YmIqzkuCMvt0of7D1n2cE0rmbi2jp0U0pjdAdZ-XNapYr8zxofkml1n5jqztdLrNS83wJgiBO8bl-pzJGuL7N9cVTRl7CI3_BAKDv6YuV0wPjQG4IW8ZKa7Mk_K")
-        return Response(res.push(ID, PW))
+        # res = Firebase("dmkka0CerK4:APA91bGxCBLn2G9E8YmIqzkuCMvt0of7D1n2cE0rmbi2jp0U0pjdAdZ-XNapYr8zxofkml1n5jqztdLrNS83wJgiBO8bl-pzJGuL7N9cVTRl7CI3_BAKDv6YuV0wPjQG4IW8ZKa7Mk_K")
+        # return Response(res.push(ID, PW))
 
         loginCheck = EclassCheck()
         userName = loginCheck.check(ID, PW)
@@ -399,13 +399,13 @@ class BuyCheckBook(APIView):
 
             serializer.save(owner=self.request.user)
 
-            serializer = self.get_bookInfo(bookId)
+            book = serializer = self.get_bookInfo(bookId)
             serializer = self.get_UserInfo(serializer.owner)
 
             # return Response(serializer.token)
 
             pushMessage = Firebase(serializer.token)
-            pushMessage.push('제목', '바디')
+            pushMessage.push('구매요청', user.username, book.bookTitle)
 
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
