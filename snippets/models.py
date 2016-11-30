@@ -3,11 +3,8 @@
  StudentID - 2014112022
  Major - Computer science engineering
 
- django rest framework에서 model과 view사이의 연결통로 및 적절한 컨트롤러 역할을 한다.
- 외래키의처리 데이터형식설정 create, update등 model과 view의 사이에서 적절한 다리역할을 한다.
-
- 공통적으로 나타나는 클래스
- Meta class - 기본적인 반환형과 현재 serializer클래스가 사용하는 model을 설정한다.
+ 장고 ORM을 사용하기 위한 모델 파일이다.
+ 클래스형식으로 데이터베이스를 만들 수 있다.
 """
 
 from django.db import models
@@ -21,6 +18,7 @@ LANGUAGE_CHOICES = sorted([(item[1][0], item[0]) for item in LEXERS])
 STYLE_CHOICES = sorted((item, item) for item in get_all_styles())
 
 
+# User모델을 커스텀해서 만든 모델이다.
 class User(AbstractUser):
     name = models.CharField(max_length=100, blank=True, default='')
     token = models.TextField(blank=True, default='')
@@ -31,6 +29,7 @@ class User(AbstractUser):
 #     name = models.CharField(max_length=100, blank=True)
 
 
+# 등록된 책을 위한 모델이다.
 class UsedBook(models.Model):
     owner = models.ForeignKey(User, related_name='books')
 
@@ -52,6 +51,7 @@ class UsedBook(models.Model):
         ordering = ('created',)
 
 
+# 채팅메시지의 정보를 위한 모델이다.
 class ChatList(models.Model):
     studentId = models.ForeignKey(User, related_name='chatLists')
     studentName = models.CharField(max_length=100, blank=True, default='')
@@ -60,6 +60,7 @@ class ChatList(models.Model):
     lastMessage = models.CharField(max_length=100, blank=True, default='')
 
 
+# 요청을 위한 메서드이다.
 class Request(models.Model):
     owner = models.ForeignKey(User, related_name='requestbuyers')
     ownerName = models.CharField(max_length=100, blank=True, default='')

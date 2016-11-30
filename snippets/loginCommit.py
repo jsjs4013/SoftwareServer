@@ -3,16 +3,17 @@
  StudentID - 2014112022
  Major - Computer science engineering
 
- django rest framework에서 model과 view사이의 연결통로 및 적절한 컨트롤러 역할을 한다.
- 외래키의처리 데이터형식설정 create, update등 model과 view의 사이에서 적절한 다리역할을 한다.
-
- 공통적으로 나타나는 클래스
- Meta class - 기본적인 반환형과 현재 serializer클래스가 사용하는 model을 설정한다.
+ 학교도서관페이지에 로그인을하여 우리학교 학생임을 인증시켜주기위해 필요한 파일이다.
 """
 
 from bs4 import BeautifulSoup
 import requests
 
+"""
+ 학교 홈페이지에 로그인하여 학교의 관게자임을 서버가 인식하기위하여 필요한 클래스이다.
+ 메인 서버에서 학교홈페이지로 session을 저장하여 POST형식으로 id와 password를 보낸다.
+ session을 활용하여 로그인이 완료되었는지 확인한다.
+"""
 class EclassCheck:
     def check(self, ID, PW):
         #### LOGIN INFO ####
@@ -21,8 +22,8 @@ class EclassCheck:
                 'password':PW
         }
 
-        # 실제 로그인 하는 부분. Dict 형태로 로그인 정보를 담아 request 보냄. Request 생성 시 두번째 인자가 들어오게 되면 자동으로 Post Request로 인식
-        login_url='http://lib.dongguk.edu/studyroom/mainFullView?type=pc' # 로그인 검증 페이지
+        # 로그인 검증 페이지
+        login_url='http://lib.dongguk.edu/studyroom/mainFullView?type=pc'
         session = requests.session()
         r = session.post(login_url, data=login_info, timeout=10)
 
