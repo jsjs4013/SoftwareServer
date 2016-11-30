@@ -29,7 +29,7 @@ from snippets.loginCommit import EclassCheck
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework.permissions import IsAuthenticated
 
-from snippets.permissions import IsOwnerOrReadOnly, checkUser
+from snippets.permissions import checkUser
 
 from rest_framework_jwt import authentication
 from rest_framework.generics import CreateAPIView, UpdateAPIView
@@ -129,8 +129,9 @@ class ChatListGETPOST(APIView):
         if snippet.username == user.username:
             snippet = snippet.chatLists.all()
             serializer = ChatSerializer(snippet, many=True)
+            chatSnippet = ChatList.objects.filter(partner=user.username)
 
-            return Response(serializer.data)
+            return Response(serializer.data, chatSnippet.data)
 
         raise Http404
 

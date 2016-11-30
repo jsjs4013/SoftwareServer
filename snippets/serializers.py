@@ -112,7 +112,7 @@ class UsedBookSerializer(serializers.ModelSerializer):
         ChatList model이 가지고있는 외래키를 username만을 보여주도록 한다.
 
         변수
-        studentId - 외래키를 사용하여 연결된 model의 username을 보여준다.
+        owner - 외래키를 사용하여 연결된 model의 username을 보여준다.
        """
     owner = serializers.ReadOnlyField(source='owner.username')
 
@@ -123,6 +123,13 @@ class UsedBookSerializer(serializers.ModelSerializer):
 
 
 class RequestSerializer(serializers.ModelSerializer):
+    """
+        Request model을 처리하는 serializer클래스이다.
+        Request model이 가지고있는 외래키를 username만을 보여주도록 한다.
+
+        변수
+        owner - 외래키를 사용하여 연결된 model의 username을 보여준다.
+       """
     owner = serializers.ReadOnlyField(source='owner.username')
 
     class Meta:
