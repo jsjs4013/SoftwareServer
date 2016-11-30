@@ -1,3 +1,18 @@
+"""
+ Author - 문주원(Moon Joowon)
+ StudentID - 2014112022
+ Major - Computer science engineering
+
+ django rest framework에서 view에 해당하는 파일이다.
+ 대부분의 MVC패턴에서 V와 몇몇의 C를 담당하는 파일이다.
+
+ 클래스들에 공통으로 나타나는 파라미터들을 정리한다.
+ queryset - 모델의 정보를 받아오는 파라미터
+ serializer_class - 모델과 view를 이어주는 serializer의 정보를 받아오는 파라미터
+ authentication_classes -
+ permission_classes -
+"""
+
 from snippets.models import User, UsedBook, Request, ChatList
 from snippets.serializers import UserSerializer, UsedBookSerializer, RequestSerializer, ChatSerializer
 from django.http import Http404
@@ -20,22 +35,38 @@ import json
 
 
 class UserList(generics.ListAPIView):
+    """
+     회원가입한 유저들의 리스트를 보여주는 클래스이다.
+     GET방식으로 요청을 받아 처리한다.
+    """
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
 
 class UserDetail(generics.RetrieveAPIView):
+    """
+     회원가입한 유저들의 pk를 URI로 받아와 그 유저의 세세한 정보를 보여주는 클래스이다.
+     GET방식으로 요청을 받아 처리한다.
+    """
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
 
 class UserManage(CreateAPIView):
+    """
+     처음 회원가입할 때 유저를 데이터베이스에 생성시켜주는 클래스이다.
+     POST방식으로 요청을 받아 처리한다.
+    """
     model = User
     permission_classes = (permissions.AllowAny,)
     serializer_class = UserSerializer
 
 
 # class UserChange(UpdateAPIView):
+#     """
+#      푸시메시지를 위한 유저의 토큰을 변경시키기 위해 존재하는 클래스이다.
+#      PUT방식으로 요청을 받아 처리한다.
+#     """
 #     model = User
 #     queryset = User.objects.all()
 #     lookup_field = 'username'
@@ -45,6 +76,10 @@ class UserManage(CreateAPIView):
 
 
 class UserChange(APIView):
+    """
+     푸시메시지를 위한 유저의 토큰을 변경시키기 위해 존재하는 클래스이다.
+     PUT 방식으로 요청을 받아 처리한다.
+    """
     authentication_classes = (authentication.JSONWebTokenAuthentication,)
     permission_classes = (permissions.IsAuthenticated,)
 
@@ -55,8 +90,8 @@ class UserChange(APIView):
             raise Http404
 
     def put(self, request, username, format=None):
-        received_json_data = json.loads(request.body.decode("utf-8"))
-        # received_json_data = request.data
+        # received_json_data = json.loads(request.body.decode("utf-8"))
+        received_json_data = request.data
         snippet = self.get_object(username)
 
         serializer = UserSerializer(snippet, data=received_json_data)
@@ -70,7 +105,8 @@ class UserChange(APIView):
 
 class ChatListGETPOST(APIView):
     """
-    코드 조각 조회, 업데이트, 삭제
+     URI를 요청할 때 주소에 포함된 학번을 체크하여 그 학번에 해당하는 채팅정보를 얻어오거나 생성한다.
+     GET과 POST방식을 지원한다.
     """
 
     authentication_classes = (authentication.JSONWebTokenAuthentication,)
@@ -107,6 +143,10 @@ class ChatListGETPOST(APIView):
 
 
 class ChatListDetail(APIView):
+    """
+     URI를 요청할 때 주소에 포함된 채팅정보의 pk를 체크하여 마지막 메시지를 갱신한다.
+     PUT방식으로 요청을 받아 처리한다.
+    """
     authentication_classes = (authentication.JSONWebTokenAuthentication,)
     permission_classes = (permissions.IsAuthenticated,)
 
@@ -128,6 +168,10 @@ class ChatListDetail(APIView):
 
 
 class LoginCommit(APIView):
+    """
+     학교홈페이지와 연동하여 로그인한 사용자의 상태를 체크하는 클래스이다.
+     만약 학교와 관계된 사람이 아니라면 로그인 및 회원가입이 되지 않는다.
+    """
     def post(self, request, format=None):
         received_json_data = json.loads(request.body.decode("utf-8"))
         ID = received_json_data['ID']
@@ -153,6 +197,9 @@ class LoginCommit(APIView):
 
 
 class TestLoginCommit(APIView):
+    """
+     테스트용 클래스
+    """
     def get(self, request, my_parameter, my_parameters, format=None):
         ID = my_parameter
         PW = my_parameters
@@ -181,6 +228,9 @@ class TestLoginCommit(APIView):
 
 
 class TestCheck(APIView):
+    """
+     테스트용 클래스
+    """
     def post(self, request, format=None):
         # received_json_data = json.loads(request.body.decode("utf-8"))
         # ID = received_json_data['ID']
@@ -194,7 +244,9 @@ class TestCheck(APIView):
 
 class BookList(APIView):
     """
-    코드 조각을 모두 보여주거나 새 코드 조각을 만듭니다.
+     서버에 등록된 책을 모두 보여주거나 새로운 책을 등록한다.
+     GET방식으로 등록된 책을 모두 보여준다.
+     POST방식으로 새로운 책을 등록할 수 있다.
     """
     authentication_classes = (authentication.JSONWebTokenAuthentication,)
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
@@ -217,7 +269,11 @@ class BookList(APIView):
 
 class BookDetail(APIView):
     """
-    코드 조각 조회, 업데이트, 삭제
+     URI에 포함된 등록한 책의 pk를 얻어와 그 책에 대한 세부조종을 하는 클래스이다.
+     GET방식으로 해당되는 책 하나에 대한 정보를 얻어온다.
+     PUT방식으로 해당되는 책의 정보를 업데이트 한다.
+     DELETE방식으로 해당되는 책의 정보를 삭제한다.
+     책이 삭제될 때 책과 연관되어있는 책 구매 요청 정보도 같이 삭제된다.
     """
 
     authentication_classes = (authentication.JSONWebTokenAuthentication,)
@@ -255,7 +311,9 @@ class BookDetail(APIView):
 
 class MyBookList(APIView):
     """
-    코드 조각 조회, 업데이트, 삭제
+     유저가 등록한 책을 보여주는 클래스이다.
+     URI로 유저의 학번을 받아와 그 학번에 해당되는 책 등록 리스트를 반환해준다.
+     GET방식으로 요청을 받아 처리한다.
     """
 
     authentication_classes = (authentication.JSONWebTokenAuthentication,)
@@ -282,7 +340,9 @@ class MyBookList(APIView):
 
 class MyRequestList(APIView):
     """
-    코드 조각 조회, 업데이트, 삭제
+     내가 요청한 책의 리스트를 보여준다.
+     URI에 포함된 학번을 체크하여 그 학번에 관계된 유저의 구매 요청 리스트를 적절한 형식으로 포매팅하여 반환하여준다.
+     GET방식으로 요청을 받아 처리한다.
     """
 
     authentication_classes = (authentication.JSONWebTokenAuthentication,)
@@ -327,7 +387,8 @@ class MyRequestList(APIView):
 
 class SearchBook(APIView):
     """
-    코드 조각 조회, 업데이트, 삭제
+     책의 제목을 검색하여 그 검색된 책 정보를 반환하는 클래스이다.
+     책의 검색은 POST를 통해 검색된다.
     """
 
     authentication_classes = (authentication.JSONWebTokenAuthentication,)
@@ -351,7 +412,9 @@ class SearchBook(APIView):
 
 class MyBuyBook(APIView):
     """
-    코드 조각 조회, 업데이트, 삭제
+     내가 등록한 책을 구매 요청한 유저의 정보를 반환하는 클래스이다.
+     URI에 포함된 학번을 현재 유저의 정보를 받아온 토큰값과 비교하여 유저임을 확인한 후 등록한 책을 구매 요청한 유저의 정보를 반환한다.
+     GET방식으로 요청을 받아 처리한다.
     """
 
     authentication_classes = (authentication.JSONWebTokenAuthentication,)
@@ -378,7 +441,10 @@ class MyBuyBook(APIView):
 
 class BuyCheckBook(APIView):
     """
-    코드 조각을 모두 보여주거나 새 코드 조각을 만듭니다.
+     등록되어있는 책을 구매요청하는 클래스이다.
+     GET방식으로 요청을하면 등록한 책에 대해서 모든 구매 요청 리스트를 보여준다.
+     POST방식으로 요청을하면 해당되는 책에 대해서 구매요청을 할 수 있다.
+     Google의 firebase cloud message를 사용하여 등록된 책이 구매요청되면 책을 등록한 사람에게 요청한 사람의 정보와 책의 제목을 푸시메시지로 보내준다.
     """
     authentication_classes = (authentication.JSONWebTokenAuthentication,)
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
@@ -436,7 +502,9 @@ class BuyCheckBook(APIView):
 
 class BookCheckDetail(APIView):
     """
-    코드 조각 조회, 업데이트, 삭제
+     사용자가 구매 요청한 책을 구매 요청 취소할 수 있는 클래스이다.
+     URI에 포함된 구매요청 pk를 비교하여 그 pk에 해당되는 유저와 현재 로그인한 유저가 같은 사람이라면 구매요청을 취소한다.
+     DELETE방식으로 요청을 한다.
     """
 
     authentication_classes = (authentication.JSONWebTokenAuthentication,)
