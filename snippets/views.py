@@ -151,6 +151,34 @@ class ChatListGETPOST(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+class ChatListPartnerGETPOST(APIView):
+    """
+     URI를 요청할 때 주소에 포함된 학번을 체크하여 그 학번에 해당하는 채팅정보를 얻어오거나 생성한다.
+     GET과 POST방식을 지원한다.
+    """
+
+    authentication_classes = (authentication.JSONWebTokenAuthentication,)
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get_object(self, username):
+        try:
+            return User.objects.get(username=username)
+        except User.DoesNotExist:
+            raise Http404
+
+    def get(self, request, username, format=None):
+        snippet = self.get_object(username)
+        user = self.request.user
+
+        if snippet.username == user.username:
+            snippet = ChatList.objects.filter(partner=user.username)
+            serializer = ChatSerializer(snippet, many=True)
+
+            return Response(serializer.data)
+
+        raise Http404
+
+
 class ChatListDetail(APIView):
     """
      URI를 요청할 때 주소에 포함된 채팅정보의 pk를 체크하여 마지막 메시지를 갱신한다.
