@@ -21,7 +21,8 @@ class UserSerializer(serializers.ModelSerializer):
         return user
 
     def update(self, instance, validated_data):
-        instance.token = validated_data.get('token', instance.token)
+        # instance.token = validated_data.get('token', instance.token)
+        instance.token = validated_data['token']
         instance.save()
 
         return instance
