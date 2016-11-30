@@ -6,11 +6,15 @@
  django rest framework에서 view에 해당하는 파일이다.
  대부분의 MVC패턴에서 V와 몇몇의 C를 담당하는 파일이다.
 
- 클래스들에 공통으로 나타나는 파라미터들을 정리한다.
+ 클래스들에 공통으로 나타나는 파라미터 및 메서드들을 정리한다.
  queryset - 모델의 정보를 받아오는 파라미터
  serializer_class - 모델과 view를 이어주는 serializer의 정보를 받아오는 파라미터
- authentication_classes -
- permission_classes -
+ authentication_classes - 무엇으로 토큰 인증을 받을지를 결정한다.
+ permission_classes - 만약 인증이 된다면 서버에 접근권한을 설정해준다.
+ get - GET요청을 처리한다.
+ post - POST요청을 처리한다.
+ put - PUT요청을 처리한다.
+ delete - DELETE요청을 처리한다.
 """
 
 from snippets.models import User, UsedBook, Request, ChatList
@@ -62,45 +66,45 @@ class UserManage(CreateAPIView):
     serializer_class = UserSerializer
 
 
-# class UserChange(UpdateAPIView):
-#     """
-#      푸시메시지를 위한 유저의 토큰을 변경시키기 위해 존재하는 클래스이다.
-#      PUT방식으로 요청을 받아 처리한다.
-#     """
-#     model = User
-#     queryset = User.objects.all()
-#     lookup_field = 'username'
-#     authentication_classes = (authentication.JSONWebTokenAuthentication,)
-#     permission_classes = (permissions.IsAuthenticated,)
-#     serializer_class = UserSerializer
-
-
-class UserChange(APIView):
+class UserChange(UpdateAPIView):
     """
      푸시메시지를 위한 유저의 토큰을 변경시키기 위해 존재하는 클래스이다.
-     PUT 방식으로 요청을 받아 처리한다.
+     PUT방식으로 요청을 받아 처리한다.
     """
+    model = User
+    queryset = User.objects.all()
+    lookup_field = 'username'
     authentication_classes = (authentication.JSONWebTokenAuthentication,)
     permission_classes = (permissions.IsAuthenticated,)
+    serializer_class = UserSerializer
 
-    def get_object(self, username):
-        try:
-            return User.objects.get(username=username)
-        except User.DoesNotExist:
-            raise Http404
 
-    def put(self, request, username, format=None):
-        received_json_data = json.loads(request.body.decode("utf-8"))
-        # received_json_data = request.data
-        snippet = self.get_object(username)
-
-        serializer = UserSerializer(snippet, data=received_json_data)
-        if serializer.is_valid():
-            serializer.save()
-
-            return Response('Success')
-
-        raise Http404
+# class UserChange(APIView):
+#     """
+#      푸시메시지를 위한 유저의 토큰을 변경시키기 위해 존재하는 클래스이다.
+#      PUT 방식으로 요청을 받아 처리한다.
+#     """
+#     authentication_classes = (authentication.JSONWebTokenAuthentication,)
+#     permission_classes = (permissions.IsAuthenticated,)
+#
+#     def get_object(self, username):
+#         try:
+#             return User.objects.get(username=username)
+#         except User.DoesNotExist:
+#             raise Http404
+#
+#     def put(self, request, username, format=None):
+#         received_json_data = json.loads(request.body.decode("utf-8"))
+#         # received_json_data = request.data
+#         snippet = self.get_object(username)
+#
+#         serializer = UserSerializer(snippet, data=received_json_data)
+#         if serializer.is_valid():
+#             serializer.save()
+#
+#             return Response('Success')
+#
+#         raise Http404
 
 
 class ChatListGETPOST(APIView):
@@ -473,6 +477,8 @@ class BuyCheckBook(APIView):
         # bookId = request.POST['bookId']
         user = self.request.user
         serializer = RequestSerializer(data=received_json_data)
+
+        # 책을 중복신청하면 안되기에 처리하는 부분
         if serializer.is_valid():
             try:
                 UsedBook.objects.get(pk=bookId)
@@ -492,6 +498,7 @@ class BuyCheckBook(APIView):
             bookInfo = self.get_bookInfo(bookId)
             userInfo = self.get_UserInfo(bookInfo.owner)
 
+            # firebase요청 부분
             pushMessage = Firebase(userInfo.token)
             pushMessage.push('구매요청', user.username, bookInfo.bookTitle)
 

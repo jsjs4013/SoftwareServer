@@ -1,3 +1,12 @@
+"""
+ Author - 문주원(Moon Joowon)
+ StudentID - 2014112022
+ Major - Computer science engineering
+
+ django rest framework에서 url들의 처리를 담당하는 파일이다.
+ jwt토큰인증 방식을 사용하기에 obtain_jwt_token, refresh_jwt_token 그리고 verify_jwt_token 클래스들을 사용하여 jwt토큰을 받아와 사용자 인증한다.
+"""
+
 from django.conf.urls import url, include
 from snippets import views
 
