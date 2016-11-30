@@ -500,10 +500,10 @@ class BuyCheckBook(APIView):
         return Response(serializer.data)
 
     def post(self, request, format=None):
-        # received_json_data = json.loads(request.body.decode("utf-8"))
-        # bookId = received_json_data['bookId']
-        received_json_data = request.data
-        bookId = request.POST['bookId']
+        received_json_data = json.loads(request.body.decode("utf-8"))
+        bookId = received_json_data['bookId']
+        # received_json_data = request.data
+        # bookId = request.POST['bookId']
         user = self.request.user
         serializer = RequestSerializer(data=received_json_data)
 
