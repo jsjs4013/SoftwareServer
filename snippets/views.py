@@ -131,11 +131,6 @@ class ChatListGETPOST(APIView):
             serializer = ChatSerializer(snippet, many=True)
 
             return Response(serializer.data)
-        else:
-            snippet = ChatList.objects.filter(partner=user.username)
-            serializer = ChatSerializer(snippet, many=True)
-
-            return Response(serializer.data)
 
         raise Http404
 

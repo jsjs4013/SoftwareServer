@@ -54,6 +54,7 @@ class UsedBook(models.Model):
 
 class ChatList(models.Model):
     studentId = models.ForeignKey(User, related_name='chatLists')
+    studentName = models.CharField(max_length=100, blank=True, default='')
     partner = models.CharField(max_length=100, blank=True, default='')
     partnerName = models.CharField(max_length=100, blank=True, default='')
     lastMessage = models.CharField(max_length=100, blank=True, default='')
