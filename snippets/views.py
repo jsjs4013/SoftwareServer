@@ -148,8 +148,8 @@ class ChatListGETPOST(APIView):
 
 class ChatListPartnerGETPOST(APIView):
     """
-     URI를 요청할 때 주소에 포함된 학번을 체크하여 그 학번에 해당하는 채팅정보를 얻어오거나 생성한다.
-     GET과 POST방식을 지원한다.
+     URI를 요청할 때 주소에 포함된 학번을 체크하여 그 학번이 파트너인 데이터를 얻어온다.
+     GET방식을 지원한다.
     """
 
     authentication_classes = (authentication.JSONWebTokenAuthentication,)
@@ -196,7 +196,7 @@ class ChatListDetail(APIView):
 
         permission = checkUser()
 
-        return permission.permissionChatPut(ChatSerializer, snippet, received_json_data, self.request.user)
+        return permission.permissionChatPut(ChatSerializer, snippet, received_json_data, user)
 
 
 class LoginCommit(APIView):
@@ -500,10 +500,10 @@ class BuyCheckBook(APIView):
         return Response(serializer.data)
 
     def post(self, request, format=None):
-        received_json_data = json.loads(request.body.decode("utf-8"))
-        bookId = received_json_data['bookId']
-        # received_json_data = request.data
-        # bookId = request.POST['bookId']
+        # received_json_data = json.loads(request.body.decode("utf-8"))
+        # bookId = received_json_data['bookId']
+        received_json_data = request.data
+        bookId = request.POST['bookId']
         user = self.request.user
         serializer = RequestSerializer(data=received_json_data)
 
