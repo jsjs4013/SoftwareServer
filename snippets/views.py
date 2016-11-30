@@ -90,8 +90,8 @@ class UserChange(APIView):
             raise Http404
 
     def put(self, request, username, format=None):
-        # received_json_data = json.loads(request.body.decode("utf-8"))
-        received_json_data = request.data
+        received_json_data = json.loads(request.body.decode("utf-8"))
+        # received_json_data = request.data
         snippet = self.get_object(username)
 
         serializer = UserSerializer(snippet, data=received_json_data)
