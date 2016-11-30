@@ -35,13 +35,37 @@ class UserManage(CreateAPIView):
     serializer_class = UserSerializer
 
 
-class UserChange(UpdateAPIView):
-    model = User
-    queryset = User.objects.all()
-    lookup_field = 'username'
+# class UserChange(UpdateAPIView):
+#     model = User
+#     queryset = User.objects.all()
+#     lookup_field = 'username'
+#     authentication_classes = (authentication.JSONWebTokenAuthentication,)
+#     permission_classes = (permissions.IsAuthenticated,)
+#     serializer_class = UserSerializer
+
+
+class UserChange(APIView):
     authentication_classes = (authentication.JSONWebTokenAuthentication,)
     permission_classes = (permissions.IsAuthenticated,)
-    serializer_class = UserSerializer
+
+    def get_object(self, username):
+        try:
+            return User.objects.get(username=username)
+        except User.DoesNotExist:
+            raise Http404
+
+    def put(self, request, username, format=None):
+        received_json_data = json.loads(request.body.decode("utf-8"))
+        # received_json_data = request.data
+        snippet = self.get_object(username)
+
+        serializer = UserSerializer(snippet, data=received_json_data)
+        if serializer.is_valid():
+            serializer.save()
+
+            return Response('Success')
+
+        raise Http404
 
 
 class ChatListGETPOST(APIView):
