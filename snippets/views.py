@@ -196,7 +196,6 @@ class ChatListDetail(APIView):
         # received_json_data = request.data
 
         permission = checkUser()
-        return Response('hihi')
 
         return permission.permissionChatPut(ChatSerializer, snippet, received_json_data, user)
 
