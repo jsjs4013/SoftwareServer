@@ -129,7 +129,11 @@ class ChatListGETPOST(APIView):
         if snippet.username == user.username:
             snippet = snippet.chatLists.all()
             serializer = ChatSerializer(snippet, many=True)
-            chatSnippet = ChatList.objects.filter(partner=user.username)
+
+            return Response(serializer.data)
+        else:
+            snippet = ChatList.objects.filter(partner=user.username)
+            serializer = ChatSerializer(snippet, many=True)
 
             return Response(serializer.data)
 
