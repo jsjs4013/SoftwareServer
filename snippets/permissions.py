@@ -12,7 +12,7 @@ from django.http import Http404
 from rest_framework import permissions, status
 
 
-class checkUser(APIView):
+class CheckUser(APIView):
     """
      권한을 설정해주고 GET, POST, PUT 그리고 DELETE를 적절하게 처리해주는 클래스이다.
      받아온 토큰인 JWT와 받아온 username이 적절한 권한을 줄 수 있는지 처리해준다.

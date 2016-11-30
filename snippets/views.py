@@ -29,7 +29,7 @@ from snippets.loginCommit import EclassCheck
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework.permissions import IsAuthenticated
 
-from snippets.permissions import checkUser
+from snippets.permissions import CheckUser
 
 from rest_framework_jwt import authentication
 from rest_framework.generics import CreateAPIView, UpdateAPIView
@@ -175,7 +175,7 @@ class ChatListDetail(APIView):
         user = self.request.user
         # received_json_data = request.data
 
-        permission = checkUser()
+        permission = CheckUser()
 
         return permission.permissionChatPut(ChatSerializer, snippet, received_json_data, user)
 
@@ -300,20 +300,20 @@ class BookDetail(APIView):
 
     def get(self, request, pk, format=None):
         snippet = self.get_object(pk)
-        permission = checkUser()
+        permission = CheckUser()
 
         return permission.permissionGet(UsedBookSerializer, snippet, self.request.user)
 
     def put(self, request, pk, format=None):
         received_json_data = json.loads(request.body.decode("utf-8"))
         snippet = self.get_object(pk)
-        permission = checkUser()
+        permission = CheckUser()
 
         return permission.permissionPut(UsedBookSerializer, snippet, received_json_data, self.request.user)
 
     def delete(self, request, pk, format=None):
         snippet = self.get_object(pk)
-        permission = checkUser()
+        permission = CheckUser()
 
         if permission.permissionDelBuy(snippet, self.request.user):
             Request.objects.filter(bookId=pk).delete()
@@ -535,6 +535,6 @@ class BookCheckDetail(APIView):
 
     def delete(self, request, pk, format=None):
         snippet = self.get_object(pk)
-        permission = checkUser()
+        permission = CheckUser()
 
         return permission.permissionDel(snippet, self.request.user)
