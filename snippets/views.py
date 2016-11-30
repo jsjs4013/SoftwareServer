@@ -188,7 +188,7 @@ class ChatListDetail(APIView):
         except User.DoesNotExist:
             raise Http404
 
-    def put(self, request, username, pk, format=None):
+    def put(self, request, pk, format=None):
         # received_json_data = json.loads(request.body.decode("utf-8"))
         received_json_data = request.data
         snippet = self.get_object(pk)
