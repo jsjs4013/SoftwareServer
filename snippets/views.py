@@ -70,6 +70,11 @@ class UserChange(UpdateAPIView):
     """
      푸시메시지를 위한 유저의 토큰을 변경시키기 위해 존재하는 클래스이다.
      PUT방식으로 요청을 받아 처리한다.
+
+     param
+      model - 데이터베이스 User model
+      queryset - User의 정보
+      lookup_field - URI에서 받아온 이름
     """
     model = User
     queryset = User.objects.all()
@@ -77,34 +82,6 @@ class UserChange(UpdateAPIView):
     authentication_classes = (authentication.JSONWebTokenAuthentication,)
     permission_classes = (permissions.IsAuthenticated,)
     serializer_class = UserSerializer
-
-
-# class UserChange(APIView):
-#     """
-#      푸시메시지를 위한 유저의 토큰을 변경시키기 위해 존재하는 클래스이다.
-#      PUT 방식으로 요청을 받아 처리한다.
-#     """
-#     authentication_classes = (authentication.JSONWebTokenAuthentication,)
-#     permission_classes = (permissions.IsAuthenticated,)
-#
-#     def get_object(self, username):
-#         try:
-#             return User.objects.get(username=username)
-#         except User.DoesNotExist:
-#             raise Http404
-#
-#     def put(self, request, username, format=None):
-#         received_json_data = json.loads(request.body.decode("utf-8"))
-#         # received_json_data = request.data
-#         snippet = self.get_object(username)
-#
-#         serializer = UserSerializer(snippet, data=received_json_data)
-#         if serializer.is_valid():
-#             serializer.save()
-#
-#             return Response('Success')
-#
-#         raise Http404
 
 
 class ChatListGETPOST(APIView):
@@ -116,6 +93,7 @@ class ChatListGETPOST(APIView):
     authentication_classes = (authentication.JSONWebTokenAuthentication,)
     permission_classes = (permissions.IsAuthenticated,)
 
+    # User 검색
     def get_object(self, username):
         try:
             return User.objects.get(username=username)
@@ -155,6 +133,7 @@ class ChatListPartnerGETPOST(APIView):
     authentication_classes = (authentication.JSONWebTokenAuthentication,)
     permission_classes = (permissions.IsAuthenticated,)
 
+    # User 검색
     def get_object(self, username):
         try:
             return User.objects.get(username=username)
@@ -182,6 +161,7 @@ class ChatListDetail(APIView):
     authentication_classes = (authentication.JSONWebTokenAuthentication,)
     permission_classes = (permissions.IsAuthenticated,)
 
+    # ChatList 검색
     def get_object(self, pk):
         try:
             return ChatList.objects.get(pk=pk)
@@ -189,8 +169,8 @@ class ChatListDetail(APIView):
             raise Http404
 
     def put(self, request, pk, format=None):
-        # received_json_data = json.loads(request.body.decode("utf-8"))
-        received_json_data = request.data
+        received_json_data = json.loads(request.body.decode("utf-8"))
+        # received_json_data = request.data
         snippet = self.get_object(pk)
         user = self.request.user
         # received_json_data = request.data
@@ -238,7 +218,7 @@ class TestLoginCommit(APIView):
         PW = my_parameters
 
 
-        res = Firebase("dmkka0CerK4:APA91bGxCBLn2G9E8YmIqzkuCMvt0of7D1n2cE0rmbi2jp0U0pjdAdZ-XNapYr8zxofkml1n5jqztdLrNS83wJgiBO8bl-pzJGuL7N9cVTRl7CI3_BAKDv6YuV0wPjQG4IW8ZKa7Mk_K")
+        res = Firebase("cf1ygdugeMg:APA91bHyUtAy0g6zLrjXCbVsTjPy7vXzWaJ-z0Z8XUgxFYIVucg1uo7FPtsXnzm680yBs4sZEL9QnpsEKcYmKZcpyryIf-TqOIY8YJchUCye-oOylo3rqCk8e8FjoVEyNDLSG4EnVZa6")
         return Response(res.push(ID, PW, 'ㅇㄴㅁ'))
 
         loginCheck = EclassCheck()
