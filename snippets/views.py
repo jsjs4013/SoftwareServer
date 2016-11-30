@@ -533,7 +533,7 @@ class BuyCheckBook(APIView):
 
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-        return Response('error', status=status.HTTP_400_BAD_REQUEST)
+        return Response('error')
 
 
 class BookCheckDetail(APIView):
