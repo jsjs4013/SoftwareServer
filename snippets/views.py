@@ -514,11 +514,11 @@ class BuyCheckBook(APIView):
 
                 filterSet = user.books.all()
                 if filterSet.filter(pk=bookId):
-                    raise Http404
+                    return Response('mybook')
 
                 filterSet = user.requestbuyers.all()
                 if filterSet.filter(bookId=bookId):
-                    raise Http404
+                    return Response('error')
             except UsedBook.DoesNotExist:
                 raise Http404
 
@@ -533,7 +533,7 @@ class BuyCheckBook(APIView):
 
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-        return Response('error')
+        return Response('error', status=status.HTTP_400_BAD_REQUEST)
 
 
 class BookCheckDetail(APIView):
