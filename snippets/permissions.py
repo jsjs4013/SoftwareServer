@@ -41,6 +41,7 @@ class checkUser(APIView):
 
     # 채팅의 마지막 메시지를 갱신해주기 위해 필요한 권한관리 메서드이다.
     def permissionChatPut(self, Serializer, snippet, data, user):
+        return Response(snippet.studentId)
         if snippet.studentId == user:
             serializer = Serializer(snippet, data=data)
             if serializer.is_valid():
