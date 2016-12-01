@@ -481,10 +481,10 @@ class BuyCheckBook(APIView):
         return Response(serializer.data)
 
     def post(self, request, format=None):
-        # received_json_data = json.loads(request.body.decode("utf-8"))
-        # bookId = received_json_data['bookId']
-        received_json_data = request.data
-        bookId = request.POST['bookId']
+        received_json_data = json.loads(request.body.decode("utf-8"))
+        bookId = received_json_data['bookId']
+        # received_json_data = request.data
+        # bookId = request.POST['bookId']
         user = self.request.user
         serializer = RequestSerializer(data=received_json_data)
 
@@ -507,8 +507,6 @@ class BuyCheckBook(APIView):
 
             bookInfo = self.get_bookInfo(bookId)
             userInfo = self.get_UserInfo(bookInfo.owner)
-
-            return Response(userInfo.token)
 
             # firebase요청 부분
             pushMessage = Firebase(userInfo.token)
