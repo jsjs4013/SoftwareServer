@@ -419,9 +419,9 @@ class SearchBook(APIView):
         received_json_data = json.loads(request.body.decode("utf-8"))
         bookName = received_json_data['bookName']
         # bookName = request.POST['bookName']
-        search = UsedBook.objects.filter(bookTitle__icontains=bookName)
-        search.sort(key = attrgetter('sellerPrice'), reverse = True)
-        serializer = UsedBookSerializer(search, many=True)
+        search = UsedBook.objects.filter(bookTitle__icontains=bookName).order_by('sellerPrice')
+        ordered = sorted(search, key=attrgetter('sellerPrice'))
+        serializer = UsedBookSerializer(ordered, many=True)
 
         return Response(serializer.data)
 
