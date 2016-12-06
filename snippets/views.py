@@ -411,7 +411,7 @@ class SearchBook(APIView):
 
     def get(self, request, bookName, format=None):
         search = UsedBook.objects.filter(bookTitle__icontains=bookName)
-        search = search.order_by('-sellerPrice')
+        search = search.order_by('sellerPrice')
         serializer = UsedBookSerializer(search, many=True)
 
         return Response(serializer.data)
