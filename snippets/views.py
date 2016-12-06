@@ -410,11 +410,10 @@ class SearchBook(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def get(self, request, bookName, format=None):
-        search = UsedBook.objects.filter(bookTitle__icontains=bookName)
-        search = search.order_by('sellerPrice')
-        # serializer = UsedBookSerializer(search, many=True)
+        search = UsedBook.objects.filter(bookTitle__icontains=bookName).order_by('sellerPrice' * 1)
+        serializer = UsedBookSerializer(search, many=True)
 
-        return Response(search.data)
+        return Response(serializer.data)
 
     def post(self, request, format=None):
         received_json_data = json.loads(request.body.decode("utf-8"))
