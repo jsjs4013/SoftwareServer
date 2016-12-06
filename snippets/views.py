@@ -423,8 +423,6 @@ class SearchBook(APIView):
         ordered = sorted(search, key=attrgetter('sellerPrice'))
         serializer = UsedBookSerializer(ordered, many=True)
 
-        # serializer = UsedBookSerializer(search, many=True)
-
         return Response(serializer.data)
 
 
