@@ -48,7 +48,7 @@ class UsedBook(models.Model):
     image = models.CharField(max_length=100, blank=True, default='')
 
     class Meta:
-        ordering = ('created',)
+        ordering = ('sellerPrice',)
 
 
 # 채팅메시지의 정보를 위한 모델이다.
