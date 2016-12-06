@@ -394,7 +394,7 @@ class MyRequestList(APIView):
                 except UsedBook.DoesNotExist:
                     raise Http404
 
-            return Response(sorted(requestList, key=itemgetter('sellerPrice')))
+            return Response(sorted(requestList, key=itemgetter('price')))
 
         raise Http404
 
