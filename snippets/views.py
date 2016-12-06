@@ -412,7 +412,7 @@ class SearchBook(APIView):
     def get(self, request, bookName, format=None):
         search = UsedBook.objects.filter(bookTitle__icontains=bookName)\
             .extra({'sellerPrice_uint': "CAST(sellerPrice as UNSIGNED)"})\
-            .order_by('sellerPrice_uint')
+            .order_by('bookTitle', 'sellerPrice_uint')
         serializer = UsedBookSerializer(search, many=True)
 
         return Response(serializer.data)
@@ -421,8 +421,9 @@ class SearchBook(APIView):
         received_json_data = json.loads(request.body.decode("utf-8"))
         bookName = received_json_data['bookName']
         # bookName = request.POST['bookName']
-        search = UsedBook.objects.filter(bookTitle__icontains=bookName).order_by('sellerPrice')
-        # ordered = sorted(search, key=attrgetter('sellerPrice'))
+        search = UsedBook.objects.filter(bookTitle__icontains=bookName)\
+            .extra({'sellerPrice_uint': "CAST(sellerPrice as UNSIGNED)"})\
+            .order_by('bookTitle', 'sellerPrice_uint')
         serializer = UsedBookSerializer(search, many=True)
 
         return Response(serializer.data)
