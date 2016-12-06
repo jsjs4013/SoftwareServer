@@ -388,13 +388,14 @@ class MyRequestList(APIView):
                                         'isbn' : book.isbn, 'owner' : book.owner.username,
                                         'professor' : book.professor, 'publisher' : book.publisher,
                                         'comment' : book.comment, 'status' : book.status,
-                                        'price' : book.price, 'sellerPrice' : int(book.sellerPrice),
+                                        'price' : book.price, 'sellerPrice' : book.sellerPrice,
                                         'pubdate' : book.pubdate, 'image' : book.image,
                                         'requestId' : snippetFilter[0]})
                 except UsedBook.DoesNotExist:
                     raise Http404
 
-            return Response(sorted(requestList, key=itemgetter('sellerPrice')))
+
+            return Response(requestList)
 
         raise Http404
 
@@ -419,8 +420,10 @@ class SearchBook(APIView):
         bookName = received_json_data['bookName']
         # bookName = request.POST['bookName']
         search = UsedBook.objects.filter(bookTitle__icontains=bookName)
-        ordered = sorted(search, key=attrgetter('last_name'))
+        ordered = sorted(search, key=attrgetter('sellerPrice'))
         serializer = UsedBookSerializer(ordered, many=True)
+
+        # serializer = UsedBookSerializer(search, many=True)
 
         return Response(serializer.data)
 
