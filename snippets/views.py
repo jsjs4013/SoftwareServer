@@ -35,7 +35,7 @@ from rest_framework_jwt import authentication
 from rest_framework.generics import CreateAPIView, UpdateAPIView
 
 from snippets.firebase import Firebase
-from operator import itemgetter
+from operator import attrgetter
 import json
 
 
@@ -420,7 +420,7 @@ class SearchBook(APIView):
         bookName = received_json_data['bookName']
         # bookName = request.POST['bookName']
         search = UsedBook.objects.filter(bookTitle__icontains=bookName)
-        ordered = sorted(search, key=itemgetter('sellerPrice'))
+        ordered = sorted(search, key=attrgetter('sellerPrice'))
         serializer = UsedBookSerializer(ordered, many=True)
 
         return Response(serializer.data)
