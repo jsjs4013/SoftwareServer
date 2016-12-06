@@ -412,7 +412,7 @@ class SearchBook(APIView):
     def get(self, request, bookName, format=None):
         search = UsedBook.objects.filter(bookTitle__icontains=bookName)\
             .extra({'sellerPrice_uint': "CAST(sellerPrice as UNSIGNED)"})\
-            .order_by('bookTitle', 'sellerPrice_uint')
+            .order_by('sellerPrice_uint')
         serializer = UsedBookSerializer(search, many=True)
 
         return Response(serializer.data)
