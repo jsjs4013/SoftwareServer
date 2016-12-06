@@ -388,13 +388,13 @@ class MyRequestList(APIView):
                                         'isbn' : book.isbn, 'owner' : book.owner.username,
                                         'professor' : book.professor, 'publisher' : book.publisher,
                                         'comment' : book.comment, 'status' : book.status,
-                                        'price' : book.price, 'sellerPrice' : book.sellerPrice,
+                                        'price' : book.price, 'sellerPrice' : int(book.sellerPrice),
                                         'pubdate' : book.pubdate, 'image' : book.image,
                                         'requestId' : snippetFilter[0]})
                 except UsedBook.DoesNotExist:
                     raise Http404
 
-            return Response(sorted(requestList, key=itemgetter('price')))
+            return Response(sorted(requestList, key=itemgetter('sellerPrice')))
 
         raise Http404
 
