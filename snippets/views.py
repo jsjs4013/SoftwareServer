@@ -35,6 +35,7 @@ from rest_framework_jwt import authentication
 from rest_framework.generics import CreateAPIView, UpdateAPIView
 
 from snippets.firebase import Firebase
+from operator import itemgetter
 import json
 
 
@@ -393,7 +394,7 @@ class MyRequestList(APIView):
                 except UsedBook.DoesNotExist:
                     raise Http404
 
-            return Response(requestList)
+            return Response(sorted(requestList, key=itemgetter('sellerPrice')))
 
         raise Http404
 
