@@ -25,7 +25,7 @@ class EclassCheck:
         # 로그인 검증 페이지
         login_url='http://lib.dongguk.edu/studyroom/mainFullView?type=pc'
         session = requests.session()
-        r = session.post(login_url, data=login_info, timeout=30)
+        r = session.post(login_url, data=login_info, timeout=15)
 
         #### LOGIN CHECK ####
         main_url = 'http://lib.dongguk.edu/studyroom/mainFullView?type=pc'
