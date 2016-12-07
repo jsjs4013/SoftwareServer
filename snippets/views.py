@@ -219,7 +219,7 @@ class TestLoginCommit(APIView):
         PW = my_parameters
 
 
-        res = Firebase("cOK-f-fx1T0:APA91bHO9r3Zl1W4mg1jbZNHKTooZtndCYi6VtieTQ5eS-E7Hc6Dnr-zeXmfmwO6ig4jzaPQj6pkWBt7HPyW4AsRgLpGFLE3-G73P8o0Iu-JxlmTFiEeILLrsTvwwT9Vx5k6bzv6KZ9s")
+        res = Firebase("cf1ygdugeMg:APA91bHyUtAy0g6zLrjXCbVsTjPy7vXzWaJ-z0Z8XUgxFYIVucg1uo7FPtsXnzm680yBs4sZEL9QnpsEKcYmKZcpyryIf-TqOIY8YJchUCye-oOylo3rqCk8e8FjoVEyNDLSG4EnVZa6")
         return Response(res.push(ID, PW, 'ㅇㄴㅁ'))
 
         loginCheck = EclassCheck()
