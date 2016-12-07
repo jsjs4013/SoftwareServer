@@ -17,7 +17,6 @@ class Firebase:
             "to": token,
             "time_to_live": 0,
             'priority' : 'high',
-            'icon' : 'launchermap',
             "notification": {
             }
         }
